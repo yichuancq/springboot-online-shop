@@ -1,4 +1,4 @@
-package member.service.member.account;
+package member.service.account;
 
 import member.domain.member.account.Account;
 

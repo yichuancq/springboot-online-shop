@@ -1,4 +1,4 @@
-package member.service.member.degree;
+package member.service.degree;
 
 import member.domain.member.degree.MemberDegree;
 

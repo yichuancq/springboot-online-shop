@@ -1,4 +1,4 @@
-package member.service.member.rights;
+package member.service.rights;
 
 import member.domain.member.rights.MemberRights;
 
