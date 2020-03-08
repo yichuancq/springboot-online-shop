@@ -8,6 +8,18 @@
     <artifactId>springboot-online-shop</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <modules>
+        <!--会员-->
+        <module>member</module>
+        <!--商品信息-->
+        <module>goods</module>
+        <!--销售-->
+        <module>sale</module>
+        <!--库存-->
+        <module>stock</module>
+    </modules>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
