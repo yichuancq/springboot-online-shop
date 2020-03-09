@@ -7,8 +7,20 @@ import goods.domain.supplier.Supplier;
  */
 public interface SupplierService {
 
+    /**
+     * save
+     *
+     * @param supplier
+     * @return
+     */
     Supplier save(Supplier supplier);
 
+    /**
+     * findByName
+     *
+     * @param name
+     * @return
+     */
     Supplier findByName(String name);
 
 

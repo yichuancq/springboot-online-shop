@@ -21,22 +21,29 @@ public class Goods extends BaseEntity {
     /**
      * 供应商
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Supplier> supplierList;
     /**
      * 出版社
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Publisher> publisherList;
     /**
      * 商品名称
      */
-    @Column(unique = true)
+    //@Column(unique = true)
     private String name;
     /**
      * 价格
      */
     private BigDecimal salePrice = BigDecimal.ZERO;
+
+    /**
+     * http://localhost:8081/images/lixiangguo2.jpeg
+     * 图片路径
+     */
+    @Transient
+    private String imageUrl = "http://localhost:8081/images/" + this.getId() + ".jpeg";
     /**
      * 备注
      */
@@ -50,8 +57,17 @@ public class Goods extends BaseEntity {
                 ", publisherList=" + publisherList +
                 ", name='" + name + '\'' +
                 ", salePrice=" + salePrice +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", memo='" + memo + '\'' +
                 '}';
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {

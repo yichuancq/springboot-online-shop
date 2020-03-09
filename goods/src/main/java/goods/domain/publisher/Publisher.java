@@ -19,7 +19,7 @@ public class Publisher extends BaseEntity {
     private Long publisherId;
 
     //name
-    @Column(unique = true)
+    //@Column(unique = true)
     private String publisherName;
     //地址
     private String address;

@@ -17,7 +17,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Goods saveGoods(Goods goods) {
         assert (goods != null);
-        return goodsRepository.saveAndFlush(goods);
+        return goodsRepository.save(goods);
     }
 
     @Override

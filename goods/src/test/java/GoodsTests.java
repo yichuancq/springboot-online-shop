@@ -3,6 +3,8 @@ import goods.domain.goods.Goods;
 import goods.domain.publisher.Publisher;
 import goods.domain.supplier.Supplier;
 import goods.service.goods.GoodsService;
+import goods.service.publisher.PublisherService;
+import goods.service.supplier.SupplierService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,32 +21,75 @@ public class GoodsTests {
 
     @Autowired
     private GoodsService goodsService;
+    @Autowired
+    private SupplierService supplierService;
+    @Autowired
+    private PublisherService publisherService;
+
 
     @Test
     public void saveGoods() {
 
         List<Supplier> supplierList = new ArrayList<>();
         List<Publisher> publisherList = new ArrayList<>();
-
+        //
         Supplier supplier = new Supplier();
         supplier.setSupplierName("中信出版社");
         supplier.setAddress("北京朝阳路路18号");
         supplierList.add(supplier);
-        ///
+        //
         Publisher publisher = new Publisher();
         publisher.setPublisherName("文艺出版社");
         publisher.setAddress("北京朝阳路路10号");
         publisherList.add(publisher);
-        ///
+        //
+
         Goods goods = new Goods();
-        goods.setName("理想国");
-        ///价格
+        //价格
         goods.setSalePrice((BigDecimal.valueOf(40.5)));
-        goods.setMemo("我是图书");
         goods.setPublisherList(publisherList);//出版社
         goods.setSupplierList(supplierList);//供应商
+        goods.setName("理想国");
+        goods.setMemo("我是图书");
         goodsService.saveGoods(goods);
 
+    }
+
+
+    @Test
+    public void patchSaveGoods() {
+
+        List<Supplier> supplierList = new ArrayList<>();
+        List<Publisher> publisherList = new ArrayList<>();
+        //
+        for (int i = 0; i < 50; i++) {
+            supplierList.clear();
+            publisherList.clear();
+            Supplier supplier = supplierService.findByName("中信出版社");
+            if (supplier == null) {
+                supplier = new Supplier();
+                supplier.setSupplierName("中信出版社");
+                supplier.setAddress("北京朝阳路路18号");
+            }
+            supplierList.add(supplier);
+            //
+            Publisher publisher = publisherService.findByName("文艺出版社");
+            if (publisher == null) {
+                publisher = new Publisher();
+                publisher.setPublisherName("文艺出版社");
+                publisher.setAddress("北京朝阳路路10号");
+            }
+            publisherList.add(publisher);
+            //
+            Goods goods = new Goods();
+            //价格
+            goods.setSalePrice((BigDecimal.valueOf(40.5)));
+            goods.setPublisherList(publisherList);//出版社
+            goods.setSupplierList(supplierList);//供应商
+            goods.setName("理想国" + i);
+            goods.setMemo("我是图书");
+            goodsService.saveGoods(goods);
+        }
     }
 
     @Test
