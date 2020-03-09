@@ -21,12 +21,12 @@ public class Goods extends BaseEntity {
     /**
      * 供应商
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Supplier> supplierList;
     /**
      * 出版社
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Publisher> publisherList;
     /**
      * 商品名称
@@ -41,6 +41,18 @@ public class Goods extends BaseEntity {
      * 备注
      */
     private String memo;
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "id=" + id +
+                ", supplierList=" + supplierList +
+                ", publisherList=" + publisherList +
+                ", name='" + name + '\'' +
+                ", salePrice=" + salePrice +
+                ", memo='" + memo + '\'' +
+                '}';
+    }
 
     public Long getId() {
         return id;

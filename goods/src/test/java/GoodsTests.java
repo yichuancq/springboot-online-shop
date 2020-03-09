@@ -49,6 +49,8 @@ public class GoodsTests {
 
     @Test
     public void findByName() {
-        goodsService.findByName("理想国");
+        Goods goods = goodsService.findByName("理想国");
+        assert (goods != null);
+        System.out.println("" + goods.toString());
     }
 }

@@ -24,6 +24,15 @@ public class Publisher extends BaseEntity {
     //地址
     private String address;
 
+    @Override
+    public String toString() {
+        return "Publisher{" +
+                "publisherId=" + publisherId +
+                ", publisherName='" + publisherName + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
     public Long getPublisherId() {
         return publisherId;
     }

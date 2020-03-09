@@ -25,6 +25,15 @@ public class Supplier extends BaseEntity {
     //地址
     private String address;
 
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "supplierId=" + supplierId +
+                ", supplierName='" + supplierName + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
     public Long getSupplierId() {
         return supplierId;
     }
