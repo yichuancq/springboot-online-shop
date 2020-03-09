@@ -17,6 +17,7 @@ public class Account extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "account_id")
     private Long id;
 
     private String userName;

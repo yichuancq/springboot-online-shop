@@ -19,39 +19,34 @@ public class Member extends Person {
 
     @Id
     @GeneratedValue
+    @Column(name = "member_id")
     private Long id;
     /**
      * 账户信息
      */
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Account account;
-
     /**
      * 会员等级
      */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private MemberDegree memberDegree;
-
     /**
      * 会员积分记录
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Points> pointsList;
-
     /**
      * 会员消费记录
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<MemberSale> memberSaleList;
-
     /**
      * 不产生销售也可能获取兑换礼品
      * 礼品兑换
      */
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<MemberGift> memberGiftList;
-
-
     /**
      * 售卡地
      */

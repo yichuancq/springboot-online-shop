@@ -11,8 +11,13 @@ public class MemberSaleItem extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "member_sale_item_id")
     private Long id;
 
+    //多对一关系映射
+    @ManyToOne(targetEntity = MemberSale.class, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "member_sale_id", referencedColumnName = "member_sale_id")
+    private MemberSale memberSale;
     /**
      * 商品信息
      */

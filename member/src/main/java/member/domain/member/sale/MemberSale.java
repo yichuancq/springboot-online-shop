@@ -15,21 +15,23 @@ public class MemberSale extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "member_sale_id")
     private Long id;
-
+    /**
+     * 会员信息
+     */
     @ManyToOne
     private Member member;
 
     /**
      * 消费明细
      */
-    @OneToMany
+    @OneToMany(targetEntity = MemberSaleItem.class, mappedBy = "memberSale", cascade = CascadeType.PERSIST)
     private List<MemberSaleItem> memberSaleItemList;
     /**
      * 操作人
      */
     private String operator;
-
     /**
      *
      */

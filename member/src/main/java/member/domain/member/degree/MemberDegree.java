@@ -2,6 +2,7 @@ package member.domain.member.degree;
 
 import member.domain.base.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ public class MemberDegree extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "member_degree_id")
     private Long id;
     //需要的点值
     private Long needPoint;

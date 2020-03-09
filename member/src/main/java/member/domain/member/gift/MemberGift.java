@@ -2,6 +2,7 @@ package member.domain.member.gift;
 
 import member.domain.base.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ public class MemberGift extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "member_gift_id")
     private Long id;
 
     /**

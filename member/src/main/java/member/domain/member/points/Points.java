@@ -2,6 +2,7 @@ package member.domain.member.points;
 
 import member.domain.base.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +16,7 @@ public class Points extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "points_id")
     private Long id;
     /**
      * 消费时间
