@@ -1,19 +1,33 @@
 package goods.domain.goods;
 
 import goods.domain.base.BaseEntity;
+import goods.domain.publisher.Publisher;
+import goods.domain.supplier.Supplier;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
+/**
+ * 商品信息
+ */
 @Entity
 public class Goods extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "goods_id")
     private Long id;
-
+    /**
+     * 供应商
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Supplier> supplierList;
+    /**
+     * 出版社
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Publisher> publisherList;
     /**
      * 商品名称
      */
@@ -22,7 +36,6 @@ public class Goods extends BaseEntity {
      * 价格
      */
     private BigDecimal salePrice = BigDecimal.ZERO;
-
     /**
      * 备注
      */
@@ -58,5 +71,21 @@ public class Goods extends BaseEntity {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public List<Supplier> getSupplierList() {
+        return supplierList;
+    }
+
+    public void setSupplierList(List<Supplier> supplierList) {
+        this.supplierList = supplierList;
+    }
+
+    public List<Publisher> getPublisherList() {
+        return publisherList;
+    }
+
+    public void setPublisherList(List<Publisher> publisherList) {
+        this.publisherList = publisherList;
     }
 }
