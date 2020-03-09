@@ -18,19 +18,22 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = GoodsApplication.class)
 public class GoodsTests {
-
+    //商品信息
     @Autowired
     private GoodsService goodsService;
+    //供应商信息
     @Autowired
     private SupplierService supplierService;
+    //出版社信息
     @Autowired
     private PublisherService publisherService;
 
 
     @Test
     public void saveGoods() {
-
+        //出版社信息
         List<Supplier> supplierList = new ArrayList<>();
+        //供应商信息
         List<Publisher> publisherList = new ArrayList<>();
         //
         Supplier supplier = new Supplier();
@@ -43,7 +46,6 @@ public class GoodsTests {
         publisher.setAddress("北京朝阳路路10号");
         publisherList.add(publisher);
         //
-
         Goods goods = new Goods();
         //价格
         goods.setSalePrice((BigDecimal.valueOf(40.5)));
@@ -55,10 +57,12 @@ public class GoodsTests {
 
     }
 
-
+    /**
+     * 中信出版社
+     * patchSaveGoods
+     */
     @Test
     public void patchSaveGoods() {
-
         List<Supplier> supplierList = new ArrayList<>();
         List<Publisher> publisherList = new ArrayList<>();
         //
@@ -92,10 +96,14 @@ public class GoodsTests {
         }
     }
 
+    /**
+     * findByName
+     */
     @Test
     public void findByName() {
-        Goods goods = goodsService.findByName("理想国");
+        //理想国
+        Goods goods = goodsService.findByName("理想国0");
         assert (goods != null);
-        System.out.println("" + goods.toString());
+        System.out.println(goods.toString());
     }
 }

@@ -20,7 +20,7 @@ public class Supplier extends BaseEntity {
     private Long supplierId;
 
     //供应商名称
-    //@Column(unique = true)
+    @Column(unique = true)
     private String supplierName;
     //地址
     private String address;
