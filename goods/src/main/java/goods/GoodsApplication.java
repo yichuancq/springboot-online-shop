@@ -6,7 +6,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
-//control+option+o
 public class GoodsApplication {
     public static void main(String[] args) {
         SpringApplication.run(GoodsApplication.class, args);

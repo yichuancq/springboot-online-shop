@@ -17,17 +17,19 @@ public class Supplier extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "supplier_id")
-    private String supplierId;
+    private Long supplierId;
+
     //供应商名称
+    @Column(unique = true)
     private String supplierName;
     //地址
     private String address;
 
-    public String getSupplierId() {
+    public Long getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(String supplierId) {
+    public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
     }
 

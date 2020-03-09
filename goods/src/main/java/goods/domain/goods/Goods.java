@@ -21,16 +21,17 @@ public class Goods extends BaseEntity {
     /**
      * 供应商
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Supplier> supplierList;
     /**
      * 出版社
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Publisher> publisherList;
     /**
      * 商品名称
      */
+    @Column(unique = true)
     private String name;
     /**
      * 价格

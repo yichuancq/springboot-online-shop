@@ -16,17 +16,19 @@ public class Publisher extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "publisher_id")
-    private String publisherId;
+    private Long publisherId;
+
     //name
+    @Column(unique = true)
     private String publisherName;
     //地址
     private String address;
 
-    public String getPublisherId() {
+    public Long getPublisherId() {
         return publisherId;
     }
 
-    public void setPublisherId(String publisherId) {
+    public void setPublisherId(Long publisherId) {
         this.publisherId = publisherId;
     }
 
