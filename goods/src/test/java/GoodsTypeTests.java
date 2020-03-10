@@ -34,19 +34,20 @@ public class GoodsTypeTests {
     @Test
     public void saveSubType() {
         //https://blog.csdn.net/u012075238/article/details/91616164
-        List<GoodsType> goodsTypes = goodsTypeApplication.findByName("root");
+        List<GoodsType> goodsTypes = goodsTypeApplication.findByName("文学");
         //
         GoodsType goodsType1 = new GoodsType();
-        goodsType1.setId(2L);
-        goodsType1.setTypeName("文学");
+        goodsType1.setId(3L);
+        goodsType1.setTypeName("儿童文学");
         goodsType1.setStatus(1);
         goodsType1.setTypeOrder(0);
+        //
         goodsType1.setParent(goodsTypes.get(0));
         goodsTypeApplication.saveGoodsType(goodsType1);
         //
         GoodsType goodsType2 = new GoodsType();
-        goodsType2.setId(3L);
-        goodsType2.setTypeName("社会科学");
+        goodsType2.setId(4L);
+        goodsType2.setTypeName("青年文学");
         goodsType2.setStatus(1);
         goodsType2.setTypeOrder(0);
         goodsType2.setParent(goodsTypes.get(0));
