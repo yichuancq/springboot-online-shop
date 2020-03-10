@@ -31,7 +31,6 @@ public class GoodsController {
     @RequestMapping(value = "/saveGoods", method = RequestMethod.GET)
     public void saveGoods(Goods goods) {
         try {
-            //
             goodsApplication.saveGoods(goods);
         } catch (Exception e) {
             logger.error("ex:{}", e.getMessage());
