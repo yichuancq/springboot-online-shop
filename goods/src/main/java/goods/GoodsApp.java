@@ -6,8 +6,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
-public class GoodsApplication {
+public class GoodsApp {
     public static void main(String[] args) {
-        SpringApplication.run(GoodsApplication.class, args);
+        SpringApplication.run(GoodsApp.class, args);
     }
 }

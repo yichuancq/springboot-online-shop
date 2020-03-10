@@ -1,4 +1,5 @@
-import goods.GoodsApplication;
+import goods.GoodsApp;
+import goods.application.GoodsApplication;
 import goods.domain.goods.Goods;
 import goods.domain.publisher.Publisher;
 import goods.domain.supplier.Supplier;
@@ -16,8 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = GoodsApplication.class)
+@SpringBootTest(classes = GoodsApp.class)
 public class GoodsTests {
+
+    @Autowired
+    private GoodsApplication goodsApplication;
     //商品信息
     @Autowired
     private GoodsService goodsService;
@@ -30,22 +34,27 @@ public class GoodsTests {
 
 
     @Test
-    public void saveGoods() {
+    public void saveGoods() throws Exception {
         //出版社信息
         List<Supplier> supplierList = new ArrayList<>();
         //供应商信息
         List<Publisher> publisherList = new ArrayList<>();
         //
-        Supplier supplier = new Supplier();
-        supplier.setSupplierName("中信出版社");
-        supplier.setAddress("北京朝阳路路18号");
+        Supplier supplier = supplierService.findByName("中信出版社");
+        if (supplier == null) {
+            supplier = new Supplier();
+            supplier.setSupplierName("中信出版社");
+            supplier.setAddress("北京朝阳路路18号");
+        }
         supplierList.add(supplier);
         //
-        Publisher publisher = new Publisher();
-        publisher.setPublisherName("文艺出版社");
-        publisher.setAddress("北京朝阳路路10号");
+        Publisher publisher = publisherService.findByName("文艺出版社");
+        if (publisher == null) {
+            publisher = new Publisher();
+            publisher.setPublisherName("文艺出版社");
+            publisher.setAddress("北京朝阳路路10号");
+        }
         publisherList.add(publisher);
-        //
         Goods goods = new Goods();
         //价格
         goods.setSalePrice((BigDecimal.valueOf(40.5)));
@@ -53,9 +62,38 @@ public class GoodsTests {
         goods.setSupplierList(supplierList);//供应商
         goods.setName("理想国");
         goods.setMemo("我是图书");
-        goodsService.saveGoods(goods);
+        goodsApplication.saveGoods(goods);
 
     }
+
+
+//    @Test
+//    public void saveGoods() {
+//        //出版社信息
+//        List<Supplier> supplierList = new ArrayList<>();
+//        //供应商信息
+//        List<Publisher> publisherList = new ArrayList<>();
+//        //
+//        Supplier supplier = new Supplier();
+//        supplier.setSupplierName("中信出版社");
+//        supplier.setAddress("北京朝阳路路18号");
+//        supplierList.add(supplier);
+//        //
+//        Publisher publisher = new Publisher();
+//        publisher.setPublisherName("文艺出版社");
+//        publisher.setAddress("北京朝阳路路10号");
+//        publisherList.add(publisher);
+//        //
+//        Goods goods = new Goods();
+//        //价格
+//        goods.setSalePrice((BigDecimal.valueOf(40.5)));
+//        goods.setPublisherList(publisherList);//出版社
+//        goods.setSupplierList(supplierList);//供应商
+//        goods.setName("理想国");
+//        goods.setMemo("我是图书");
+//        goodsService.saveGoods(goods);
+//
+//    }
 
     /**
      * 中信出版社
