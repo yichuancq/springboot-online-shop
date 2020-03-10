@@ -41,7 +41,6 @@ public class GoodsTypeTests {
         goodsType1.setTypeName("儿童文学");
         goodsType1.setStatus(1);
         goodsType1.setTypeOrder(0);
-        //
         goodsType1.setParent(goodsTypes.get(0));
         goodsTypeApplication.saveGoodsType(goodsType1);
         //
