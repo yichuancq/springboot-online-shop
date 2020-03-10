@@ -14,7 +14,7 @@ public class GoodsType extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "goods_type_id", unique = true)
+    @Column(name = "goods_type_id")
     private Long id;
     //父编码
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -22,6 +22,7 @@ public class GoodsType extends BaseEntity {
     @JsonIgnore
     private GoodsType parent;
     //类型名称
+    @Column(unique = true)
     private String typeName;
     //排序号
     private Integer typeOrder;
@@ -30,6 +31,7 @@ public class GoodsType extends BaseEntity {
     //
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER)
     private List<GoodsType> goodsTypeList;
+
     //
     public GoodsType getParent() {
         return parent;

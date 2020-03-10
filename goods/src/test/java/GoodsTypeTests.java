@@ -37,7 +37,7 @@ public class GoodsTypeTests {
         List<GoodsType> goodsTypes = goodsTypeApplication.findByName("文学");
         //
         GoodsType goodsType1 = new GoodsType();
-        goodsType1.setId(3L);
+        goodsType1.setId(4L);
         goodsType1.setTypeName("儿童文学");
         goodsType1.setStatus(1);
         goodsType1.setTypeOrder(0);
@@ -45,12 +45,11 @@ public class GoodsTypeTests {
         goodsTypeApplication.saveGoodsType(goodsType1);
         //
         GoodsType goodsType2 = new GoodsType();
-        goodsType2.setId(4L);
+        goodsType2.setId(5L);
         goodsType2.setTypeName("青年文学");
         goodsType2.setStatus(1);
         goodsType2.setTypeOrder(0);
         goodsType2.setParent(goodsTypes.get(0));
-        //
         goodsTypeApplication.saveGoodsType(goodsType2);
         //
     }
