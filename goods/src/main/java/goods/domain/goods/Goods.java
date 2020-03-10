@@ -18,6 +18,12 @@ public class Goods extends BaseEntity {
     @GeneratedValue
     @Column(name = "goods_id")
     private Long id;
+
+    /**
+     * 商品类别
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private GoodsType goodsType;
     /**
      * 供应商
      */
@@ -33,6 +39,11 @@ public class Goods extends BaseEntity {
      */
     //@Column(unique = true)
     private String name;
+
+    /**
+     * isbn
+     */
+    private String isbn;
     /**
      * 价格
      */
@@ -43,23 +54,41 @@ public class Goods extends BaseEntity {
      * 图片路径
      */
     @Transient
-    private String imageUrl = "http://localhost:8081/images/" + this.getId() + ".jpeg";
+    private String imageUrl;
     /**
      * 备注
      */
     private String memo;
-
+    
     @Override
     public String toString() {
         return "Goods{" +
                 "id=" + id +
+                ", goodsType=" + goodsType +
                 ", supplierList=" + supplierList +
                 ", publisherList=" + publisherList +
                 ", name='" + name + '\'' +
+                ", isbn='" + isbn + '\'' +
                 ", salePrice=" + salePrice +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", memo='" + memo + '\'' +
                 '}';
+    }
+
+    public GoodsType getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(GoodsType goodsType) {
+        this.goodsType = goodsType;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getImageUrl() {
