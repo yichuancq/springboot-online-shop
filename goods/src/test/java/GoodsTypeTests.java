@@ -24,7 +24,6 @@ public class GoodsTypeTests {
         goodsType.setTypeName("root");
         goodsType.setStatus(1);
         goodsType.setTypeOrder(0);
-//        goodsType.setParent(goodsType);
         goodsType.setGoodsTypeList(null);
         goodsTypeApplication.saveGoodsType(goodsType);
     }
