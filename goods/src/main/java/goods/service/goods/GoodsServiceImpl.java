@@ -22,7 +22,6 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Goods findByName(String goodsName) {
-        assert (!goodsName.isEmpty());
         return goodsRepository.findByName(goodsName);
     }
 }

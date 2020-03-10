@@ -38,4 +38,16 @@ public class GoodsController {
         }
     }
 
+    @ApiOperation(value = "findByGoodsName", notes = "findByGoodsName")
+    @RequestMapping(value = "/findByGoodsName", method = RequestMethod.GET)
+    public Goods findByGoodsName(String goodsName) {
+        try {
+            return goodsApplication.findByGoodsName(goodsName);
+        } catch (Exception e) {
+            logger.error("ex:{}", e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

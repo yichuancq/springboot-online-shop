@@ -24,8 +24,10 @@ public class GoodsApplication {
     @Autowired
     private PublisherService publisherService;
 
+
     /**
      * @param goodsInput
+     * @throws Exception
      */
     public void saveGoods(Goods goodsInput) throws Exception {
         if (goodsInput == null) {
@@ -63,6 +65,17 @@ public class GoodsApplication {
             goodsService.saveGoods(goodsInput);
         }
 
+    }
+
+    /**
+     * @param goodsName
+     * @return
+     */
+    public Goods findByGoodsName(String goodsName) {
+        if (StringUtils.isEmpty(goodsName)) {
+            return null;
+        }
+        return goodsService.findByName(goodsName);
     }
 
 }

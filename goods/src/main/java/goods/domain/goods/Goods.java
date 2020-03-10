@@ -1,5 +1,6 @@
 package goods.domain.goods;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import goods.domain.base.BaseEntity;
 import goods.domain.publisher.Publisher;
 import goods.domain.supplier.Supplier;
@@ -23,6 +24,7 @@ public class Goods extends BaseEntity {
      * 商品类别
      */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
     private GoodsType goodsType;
     /**
      * 供应商
@@ -59,21 +61,21 @@ public class Goods extends BaseEntity {
      * 备注
      */
     private String memo;
-    
-    @Override
-    public String toString() {
-        return "Goods{" +
-                "id=" + id +
-                ", goodsType=" + goodsType +
-                ", supplierList=" + supplierList +
-                ", publisherList=" + publisherList +
-                ", name='" + name + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", salePrice=" + salePrice +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", memo='" + memo + '\'' +
-                '}';
-    }
+
+//    @Override
+//    public String toString() {
+//        return "Goods{" +
+//                "id=" + id +
+//                ", goodsType=" + goodsType +
+//                ", supplierList=" + supplierList +
+//                ", publisherList=" + publisherList +
+//                ", name='" + name + '\'' +
+//                ", isbn='" + isbn + '\'' +
+//                ", salePrice=" + salePrice +
+//                ", imageUrl='" + imageUrl + '\'' +
+//                ", memo='" + memo + '\'' +
+//                '}';
+//    }
 
     public GoodsType getGoodsType() {
         return goodsType;
@@ -146,4 +148,5 @@ public class Goods extends BaseEntity {
     public void setPublisherList(List<Publisher> publisherList) {
         this.publisherList = publisherList;
     }
+
 }

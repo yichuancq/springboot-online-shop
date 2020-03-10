@@ -1,6 +1,8 @@
 import goods.GoodsApp;
 import goods.application.GoodsApplication;
+import goods.application.GoodsTypeApplication;
 import goods.domain.goods.Goods;
+import goods.domain.goods.GoodsType;
 import goods.domain.publisher.Publisher;
 import goods.domain.supplier.Supplier;
 import goods.service.goods.GoodsService;
@@ -19,6 +21,9 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = GoodsApp.class)
 public class GoodsTests {
+
+    @Autowired
+    private GoodsTypeApplication goodsTypeApplication;
 
     @Autowired
     private GoodsApplication goodsApplication;
@@ -40,10 +45,12 @@ public class GoodsTests {
         //供应商信息
         List<Publisher> publisherList = new ArrayList<>();
         //
-        Supplier supplier = supplierService.findByName("中信出版社");
+        List<GoodsType> goodsTypes = goodsTypeApplication.findByName("文学");
+
+        Supplier supplier = supplierService.findByName("磨铁集团");
         if (supplier == null) {
             supplier = new Supplier();
-            supplier.setSupplierName("中信出版社");
+            supplier.setSupplierName("磨铁集团");
             supplier.setAddress("北京朝阳路路18号");
         }
         supplierList.add(supplier);
@@ -62,6 +69,8 @@ public class GoodsTests {
         goods.setSupplierList(supplierList);//供应商
         goods.setName("理想国");
         goods.setMemo("我是图书");
+        //商品类别
+        goods.setGoodsType(goodsTypes.get(0));
         goodsApplication.saveGoods(goods);
 
     }
@@ -140,8 +149,10 @@ public class GoodsTests {
     @Test
     public void findByName() {
         //理想国
-        Goods goods = goodsService.findByName("理想国0");
+        Goods goods = goodsService.findByName("理想国");
         assert (goods != null);
+        GoodsType goodsType = goods.getGoodsType();
+        System.out.println(goodsType.toString());
         System.out.println(goods.toString());
     }
 }
