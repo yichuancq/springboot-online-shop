@@ -24,7 +24,7 @@ public class Goods extends BaseEntity {
      * 商品类别
      */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
     private GoodsType goodsType;
     /**
      * 供应商
@@ -39,7 +39,6 @@ public class Goods extends BaseEntity {
     /**
      * 商品名称
      */
-    //@Column(unique = true)
     private String name;
 
     /**
