@@ -17,6 +17,4 @@ public interface GoodsTypeService {
      * @return
      */
     List<GoodsType> findTypeByName(String goodsTypeName);
-
-
 }
