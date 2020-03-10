@@ -14,12 +14,10 @@ import java.util.List;
  */
 @Entity
 public class Goods extends BaseEntity {
-
     @Id
     @GeneratedValue
     @Column(name = "goods_id")
     private Long id;
-
     /**
      * 商品类别
      */
@@ -56,25 +54,34 @@ public class Goods extends BaseEntity {
      */
     @Transient
     private String imageUrl;
+    /***
+     * 作者
+     */
+    private String author;
+    /**
+     * 译者
+     */
+    private String translator;
     /**
      * 备注
      */
     private String memo;
 
-//    @Override
-//    public String toString() {
-//        return "Goods{" +
-//                "id=" + id +
-//                ", goodsType=" + goodsType +
-//                ", supplierList=" + supplierList +
-//                ", publisherList=" + publisherList +
-//                ", name='" + name + '\'' +
-//                ", isbn='" + isbn + '\'' +
-//                ", salePrice=" + salePrice +
-//                ", imageUrl='" + imageUrl + '\'' +
-//                ", memo='" + memo + '\'' +
-//                '}';
-//    }
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getTranslator() {
+        return translator;
+    }
+
+    public void setTranslator(String translator) {
+        this.translator = translator;
+    }
 
     public GoodsType getGoodsType() {
         return goodsType;
