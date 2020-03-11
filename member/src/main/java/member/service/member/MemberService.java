@@ -7,11 +7,14 @@ import member.domain.member.Member;
  */
 public interface MemberService {
 
+
+    Member addMember(Member member);
+
     /**
      * @return
      */
 
-    Member getMemberInfo();
+    Member findOne(Member member);
 
 
     /**

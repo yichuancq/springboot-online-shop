@@ -1,21 +1,22 @@
-package member.domain.member.sale;
+package member.domain.bill;
 
 import member.domain.base.BaseEntity;
 import member.domain.member.Member;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 会员消费记录
+ * 销售订单
  */
 @Entity
-public class MemberSale extends BaseEntity {
+public class SaleBill extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "member_sale_id")
+    @Column(name = "sale_bill_id")
     private Long id;
     /**
      * 会员信息
@@ -26,8 +27,15 @@ public class MemberSale extends BaseEntity {
     /**
      * 消费明细
      */
-    @OneToMany(targetEntity = MemberSaleItem.class, mappedBy = "memberSale", cascade = CascadeType.PERSIST)
-    private List<MemberSaleItem> memberSaleItemList;
+    @OneToMany(targetEntity = SaleBillItem.class, mappedBy = "saleBill", cascade = CascadeType.PERSIST)
+    private List<SaleBillItem> saleBillItemList;
+
+    /**
+     * 单据状态
+     */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private SaleBillTypeCfg saleBillTypeCfg;
     /**
      * 操作人
      */
@@ -59,12 +67,12 @@ public class MemberSale extends BaseEntity {
         this.member = member;
     }
 
-    public List<MemberSaleItem> getMemberSaleItemList() {
-        return memberSaleItemList;
+    public List<SaleBillItem> getSaleBillItemList() {
+        return saleBillItemList;
     }
 
-    public void setMemberSaleItemList(List<MemberSaleItem> memberSaleItemList) {
-        this.memberSaleItemList = memberSaleItemList;
+    public void setSaleBillItemList(List<SaleBillItem> saleBillItemList) {
+        this.saleBillItemList = saleBillItemList;
     }
 
     public String getOperator() {
@@ -89,5 +97,13 @@ public class MemberSale extends BaseEntity {
 
     public void setSalePlace(String salePlace) {
         this.salePlace = salePlace;
+    }
+
+    public SaleBillTypeCfg getSaleBillTypeCfg() {
+        return saleBillTypeCfg;
+    }
+
+    public void setSaleBillTypeCfg(SaleBillTypeCfg saleBillTypeCfg) {
+        this.saleBillTypeCfg = saleBillTypeCfg;
     }
 }
