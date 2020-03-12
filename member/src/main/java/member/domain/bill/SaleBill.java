@@ -113,4 +113,12 @@ public class SaleBill extends BaseEntity {
     public void setSaleBillTypeCfg(SaleBillTypeCfg saleBillTypeCfg) {
         this.saleBillTypeCfg = saleBillTypeCfg;
     }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
 }

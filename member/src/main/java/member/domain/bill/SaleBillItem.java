@@ -48,4 +48,19 @@ public class SaleBillItem extends BaseEntity {
         this.salePrice = salePrice;
     }
 
+    public SaleBill getSaleBill() {
+        return saleBill;
+    }
+
+    public void setSaleBill(SaleBill saleBill) {
+        this.saleBill = saleBill;
+    }
+
+    public long getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(long goodsId) {
+        this.goodsId = goodsId;
+    }
 }

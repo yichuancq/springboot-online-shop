@@ -39,5 +39,43 @@ public class ShoppingCart extends BaseEntity {
      */
     private BigDecimal totalMoney = BigDecimal.ZERO;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public SaleBill getSaleBill() {
+        return saleBill;
+    }
+
+    public void setSaleBill(SaleBill saleBill) {
+        this.saleBill = saleBill;
+    }
+
+    public List<ShoppingCartItem> getShoppingCartItemList() {
+        return shoppingCartItemList;
+    }
+
+    public void setShoppingCartItemList(List<ShoppingCartItem> shoppingCartItemList) {
+        this.shoppingCartItemList = shoppingCartItemList;
+    }
+
+    public BigDecimal getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(BigDecimal totalMoney) {
+        this.totalMoney = totalMoney;
+    }
 }

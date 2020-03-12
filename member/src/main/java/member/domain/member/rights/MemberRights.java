@@ -27,5 +27,27 @@ public class MemberRights extends BaseEntity {
      */
     private Integer state;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRightsName() {
+        return rightsName;
+    }
+
+    public void setRightsName(String rightsName) {
+        this.rightsName = rightsName;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
 }

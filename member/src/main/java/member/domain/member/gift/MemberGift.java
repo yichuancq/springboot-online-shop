@@ -32,4 +32,36 @@ public class MemberGift extends BaseEntity {
      * 礼品库存数量
      */
     private Integer amount;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getGiftName() {
+        return giftName;
+    }
+
+    public void setGiftName(String giftName) {
+        this.giftName = giftName;
+    }
+
+    public Long getNeedPoints() {
+        return needPoints;
+    }
+
+    public void setNeedPoints(Long needPoints) {
+        this.needPoints = needPoints;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 }
