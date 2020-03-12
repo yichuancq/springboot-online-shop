@@ -1,6 +1,7 @@
 package member.domain.member;
 
 import member.domain.bill.SaleBill;
+import member.domain.cart.ShoppingCart;
 import member.domain.member.account.Account;
 import member.domain.member.degree.MemberDegree;
 import member.domain.member.gift.MemberGift;
@@ -41,6 +42,12 @@ public class Member extends Person {
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<SaleBill> saleBillList;
+    /**
+     * 会员购物车
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<ShoppingCart> shoppingCartList;
+
     /**
      * 不产生销售也可能获取兑换礼品
      * 礼品兑换

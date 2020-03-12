@@ -1,6 +1,7 @@
 package member.domain.bill;
 
 import member.domain.base.BaseEntity;
+import member.domain.cart.ShoppingCart;
 import member.domain.member.Member;
 
 import javax.persistence.*;
@@ -23,6 +24,12 @@ public class SaleBill extends BaseEntity {
      */
     @ManyToOne
     private Member member;
+
+    /**
+     * 关联购物车信息
+     */
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private ShoppingCart shoppingCart;
 
     /**
      * 消费明细
