@@ -1,9 +1,11 @@
 package member.domain.express;
 
 import member.domain.base.BaseEntity;
-import member.domain.member.Member;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * 会员快递信息
@@ -15,12 +17,6 @@ public class MemberExpressInfo extends BaseEntity {
     @GeneratedValue
     @Column(name = "member_express_id")
     private Long id;
-
-    /**
-     * 会员信息
-     */
-    @ManyToOne
-    private Member member;
     /**
      * 收件人姓名
      */
@@ -46,14 +42,6 @@ public class MemberExpressInfo extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
     }
 
     public String getPersonName() {

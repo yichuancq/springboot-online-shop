@@ -32,9 +32,8 @@ public class Member extends Person {
      * 一个会员可能存在多个收货地址
      * 会员快递信息
      */
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<MemberExpressInfo> memberExpressInfoList;
-
 
     /**
      * 会员等级
