@@ -2,6 +2,7 @@ package member.domain.member;
 
 import member.domain.bill.SaleBill;
 import member.domain.cart.ShoppingCart;
+import member.domain.express.MemberExpressInfo;
 import member.domain.member.account.Account;
 import member.domain.member.degree.MemberDegree;
 import member.domain.member.gift.MemberGift;
@@ -27,6 +28,14 @@ public class Member extends Person {
      */
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Account account;
+    /**
+     * 一个会员可能存在多个收货地址
+     * 会员快递信息
+     */
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<MemberExpressInfo> memberExpressInfoList;
+
+
     /**
      * 会员等级
      */
@@ -67,4 +76,91 @@ public class Member extends Person {
      */
     private LocalDateTime endTime;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public List<MemberExpressInfo> getMemberExpressInfoList() {
+        return memberExpressInfoList;
+    }
+
+    public void setMemberExpressInfoList(List<MemberExpressInfo> memberExpressInfoList) {
+        this.memberExpressInfoList = memberExpressInfoList;
+    }
+
+    public MemberDegree getMemberDegree() {
+        return memberDegree;
+    }
+
+    public void setMemberDegree(MemberDegree memberDegree) {
+        this.memberDegree = memberDegree;
+    }
+
+    public List<Points> getPointsList() {
+        return pointsList;
+    }
+
+    public void setPointsList(List<Points> pointsList) {
+        this.pointsList = pointsList;
+    }
+
+    public List<SaleBill> getSaleBillList() {
+        return saleBillList;
+    }
+
+    public void setSaleBillList(List<SaleBill> saleBillList) {
+        this.saleBillList = saleBillList;
+    }
+
+    public List<ShoppingCart> getShoppingCartList() {
+        return shoppingCartList;
+    }
+
+    public void setShoppingCartList(List<ShoppingCart> shoppingCartList) {
+        this.shoppingCartList = shoppingCartList;
+    }
+
+    public List<MemberGift> getMemberGiftList() {
+        return memberGiftList;
+    }
+
+    public void setMemberGiftList(List<MemberGift> memberGiftList) {
+        this.memberGiftList = memberGiftList;
+    }
+
+    public String getSalePlace() {
+        return salePlace;
+    }
+
+    public void setSalePlace(String salePlace) {
+        this.salePlace = salePlace;
+    }
+
+    public LocalDateTime getStartTIme() {
+        return startTIme;
+    }
+
+    public void setStartTIme(LocalDateTime startTIme) {
+        this.startTIme = startTIme;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }
