@@ -28,6 +28,8 @@ public class Account extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime loginTime = LocalDateTime.now();
 
+    public Account() {
+    }
     public Account(String userName, String password, String salt) {
         this.userName = userName;
         this.password = password;
