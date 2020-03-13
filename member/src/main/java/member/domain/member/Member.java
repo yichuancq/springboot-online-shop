@@ -3,6 +3,7 @@ package member.domain.member;
 import member.domain.bill.SaleBill;
 import member.domain.cart.ShoppingCart;
 import member.domain.express.MemberExpressInfo;
+import member.domain.favorites.Favorites;
 import member.domain.member.account.Account;
 import member.domain.member.degree.MemberDegree;
 import member.domain.member.gift.MemberGift;
@@ -55,6 +56,11 @@ public class Member extends Person {
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<ShoppingCart> shoppingCartList;
+    /**
+     * 会员收藏夹
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Favorites> favoritesList;
 
     /**
      * 不产生销售也可能获取兑换礼品
