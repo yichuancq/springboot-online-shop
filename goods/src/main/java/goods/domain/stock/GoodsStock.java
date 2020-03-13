@@ -1,9 +1,12 @@
 package goods.domain.stock;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import goods.domain.base.BaseEntity;
+import goods.domain.goods.Goods;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 商品库存
@@ -16,6 +19,9 @@ public class GoodsStock extends BaseEntity {
     @Column(name = "stock_id")
     private Long stockId;
 
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Goods> goodsList;
     /**
      * 入库库存属性
      */
@@ -113,5 +119,13 @@ public class GoodsStock extends BaseEntity {
 
     public void setOutStockAttributeName(String outStockAttributeName) {
         this.outStockAttributeName = outStockAttributeName;
+    }
+
+    public List<Goods> getGoodsList() {
+        return goodsList;
+    }
+
+    public void setGoodsList(List<Goods> goodsList) {
+        this.goodsList = goodsList;
     }
 }
