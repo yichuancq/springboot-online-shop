@@ -1,7 +1,7 @@
 package member.service.member;
 
 import member.domain.member.Member;
-import member.repository.MemberRepository;
+import member.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;

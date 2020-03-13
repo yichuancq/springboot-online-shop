@@ -1,7 +1,7 @@
 package member.service.bill;
 
 import member.domain.bill.SaleBill;
-import member.repository.SaleBillRepository;
+import member.repository.bill.SaleBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;

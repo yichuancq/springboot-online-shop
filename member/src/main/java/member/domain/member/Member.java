@@ -168,4 +168,12 @@ public class Member extends Person {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
+    public List<Favorites> getFavoritesList() {
+        return favoritesList;
+    }
+
+    public void setFavoritesList(List<Favorites> favoritesList) {
+        this.favoritesList = favoritesList;
+    }
 }
