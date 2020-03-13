@@ -3,6 +3,7 @@ package goods.domain.goods;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import goods.domain.base.BaseEntity;
 import goods.domain.publisher.Publisher;
+import goods.domain.stock.GoodsStock;
 import goods.domain.supplier.Supplier;
 
 import javax.persistence.*;
@@ -35,6 +36,11 @@ public class Goods extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Publisher> publisherList;
     /**
+     * 商品库存信息
+     */
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<GoodsStock> goodsStockList;
+    /**
      * 商品名称
      */
     private String name;
@@ -66,6 +72,14 @@ public class Goods extends BaseEntity {
      * 备注
      */
     private String memo;
+
+    public List<GoodsStock> getGoodsStockList() {
+        return goodsStockList;
+    }
+
+    public void setGoodsStockList(List<GoodsStock> goodsStockList) {
+        this.goodsStockList = goodsStockList;
+    }
 
     public String getAuthor() {
         return author;
