@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "会员信息API")
 @RequestMapping("/member")
 public class MemberController {
-    private final Logger logger = LoggerFactory.getLogger(MemberController.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private MemberApplication memberApplication;

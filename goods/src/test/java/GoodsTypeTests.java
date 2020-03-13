@@ -3,6 +3,8 @@ import goods.application.GoodsTypeApplication;
 import goods.domain.goods.GoodsType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -12,7 +14,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = GoodsApp.class)
 public class GoodsTypeTests {
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private GoodsTypeApplication goodsTypeApplication;
 
@@ -59,8 +61,8 @@ public class GoodsTypeTests {
         //
         List<GoodsType> goodsTypes = goodsTypeApplication.findByName("root");
         for (GoodsType goodsType : goodsTypes) {
+            logger.info("goods type:{}",goodsType.getTypeName());
             System.out.println("sub " + goodsType.getGoodsTypeList());
-            System.out.println(goodsType.toString());
         }
     }
 }

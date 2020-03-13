@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "销售订单API")
 @RequestMapping("/bill")
 public class SaleBillController {
-    private final Logger logger = LoggerFactory.getLogger(MemberController.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SaleBillApplication saleBillApplication;

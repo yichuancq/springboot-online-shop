@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 @Service
 public class GoodsApplication {
 
-    private final Logger logger = LoggerFactory.getLogger(GoodsApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     //商品信息
     @Autowired
     private GoodsService goodsService;
