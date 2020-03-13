@@ -56,6 +56,20 @@ public class GoodsStock extends BaseEntity {
      */
     private String operator;
 
+    @Override
+    public String toString() {
+        return "GoodsStock{" +
+                "stockId=" + stockId +
+                ", goodsList=" + goodsList +
+                ", inStockAttribute=" + inStockAttribute +
+                ", outStockAttribute=" + outStockAttribute +
+                ", inStockAttributeName='" + inStockAttributeName + '\'' +
+                ", outStockAttributeName='" + outStockAttributeName + '\'' +
+                ", salePrice=" + salePrice +
+                ", amount=" + amount +
+                ", operator='" + operator + '\'' +
+                '}';
+    }
 
     public Long getStockId() {
         return stockId;

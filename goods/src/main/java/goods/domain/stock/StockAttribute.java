@@ -26,6 +26,15 @@ public class StockAttribute extends BaseEntity {
      */
     private Integer status;
 
+    @Override
+    public String toString() {
+        return "StockAttribute{" +
+                "id=" + id +
+                ", stockAttributeCfg=" + stockAttributeCfg +
+                ", status=" + status +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }
