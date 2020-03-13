@@ -18,6 +18,8 @@
         <module>sale</module>
         <!--库存-->
         <module>stock</module>
+        <!--授权认证-->
+        <module>oauth2</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

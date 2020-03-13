@@ -9,6 +9,7 @@
         <module name="sale" />
         <module name="stock" />
         <module name="member" />
+        <module name="oauth2" />
         <module name="goods" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="goods" options="-parameters" />
       <module name="member" options="-parameters" />
+      <module name="oauth2" options="-parameters" />
       <module name="sale" options="-parameters" />
       <module name="stock" options="-parameters" />
     </option>
