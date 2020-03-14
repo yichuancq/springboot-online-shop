@@ -1,5 +1,6 @@
 package oauth2.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import oauth2.domain.base.BaseEntity;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ public class SysPermission extends BaseEntity {
 
     @Id
     @GeneratedValue
-    private Long id;//主键.
+    private Long id;//主键
     private String name;//名称.
 
     @Column(columnDefinition = "enum('menu','button')")
@@ -18,11 +19,17 @@ public class SysPermission extends BaseEntity {
 
     private String url;//资源路径.
     private String permission;
-    //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
-    private Long parentId; //父编号
-    private String parentIds; //父编号列表
     private Boolean available = Boolean.FALSE;
-
+    //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
+    //父编码
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_Id")
+    @JsonIgnore
+    private SysPermission parent;
+    //
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER)
+    private List<SysPermission> sysPermissionList;
+    //
     @ManyToMany(fetch = FetchType.LAZY)//懒加载
     private List<SysRole> sysRoleList;
 
@@ -67,27 +74,35 @@ public class SysPermission extends BaseEntity {
         this.permission = permission;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getParentIds() {
-        return parentIds;
-    }
-
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds;
-    }
-
     public Boolean getAvailable() {
         return available;
     }
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public SysPermission getParent() {
+        return parent;
+    }
+
+    public void setParent(SysPermission parent) {
+        this.parent = parent;
+    }
+
+    public List<SysPermission> getSysPermissionList() {
+        return sysPermissionList;
+    }
+
+    public void setSysPermissionList(List<SysPermission> sysPermissionList) {
+        this.sysPermissionList = sysPermissionList;
+    }
+
+    public List<SysRole> getSysRoleList() {
+        return sysRoleList;
+    }
+
+    public void setSysRoleList(List<SysRole> sysRoleList) {
+        this.sysRoleList = sysRoleList;
     }
 }

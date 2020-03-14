@@ -15,17 +15,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configurable
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true,jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-
     @Autowired
     private UserDetailsService userDetailsService;
-
 
     /**
      * 静态资源设置
@@ -41,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/layui/**"
         );
     }
+
     /**
      * http请求设置
      */
@@ -50,11 +46,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();//解决 in a frame because it set 'X-Frame-Options' to 'DENY' 问题
         //http.anonymous().disable();
         http.authorizeRequests()
-                .antMatchers("/login/**","/initUserData")//不拦截登录相关方法
+                .antMatchers("/login/**", "/initUserData")//不拦截登录相关方法
+                //.antMatchers("/login/**", "/initUserData")//不拦截登录相关方法
                 .permitAll()
                 //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
 //			.anyRequest()
 //			.authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
+                // 所有/trace/user/ 的所有请求 都放行
+                .antMatchers("/trace/users/**").permitAll()
+                // swagger start
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/configuration/ui").permitAll()
+                .antMatchers("/configuration/security").permitAll()
+                // swagger end
                 .anyRequest()
                 .access("@rbacPermission.hasPermission(request, authentication)")//根据账号权限访问
                 .and()
@@ -64,17 +72,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")  //登录POST请求路径
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .defaultSuccessUrl("/main")   //默认登录成功页面
+                .defaultSuccessUrl("/welcome")
+                .failureUrl("/error")
+                .permitAll()
+                .and()
+                .logout()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler) //无权限处理器
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login?logout");  //退出登录成功URL
-
     }
+
+
     /**
-     * 自定义获取用户信息接口
+     * 认证
      */
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -83,6 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 密码加密算法
+     *
      * @return
      */
     @Bean

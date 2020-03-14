@@ -35,7 +35,9 @@ public class RbacPermission {
             List<SysRole> roles = (List<SysRole>) ((UserInfo) principal).getSysRoleList();
             if (roles != null) {
                 for (SysRole sysRole : roles) {
+                    System.out.println("role name=>" + sysRole.getRole());
                     for (SysPermission permission : sysRole.getPermissions()) {
+                        System.out.println("permission name=>" + permission.getName());
                         if (antPathMatcher.match(permission.getUrl(), request.getRequestURI())) {
                             hasPermission = true;
                             break;
