@@ -1,6 +1,6 @@
 # springboot-online-shop
 
-— oauth2模块
+- oauth2模块
 
 - 商品模块
 
