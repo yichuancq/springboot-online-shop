@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 @RestController
 @Api(value = "HomePage API")
 @RequestMapping("/home")
 public class HomeController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     /**
      * @param userInfo
      * @return
@@ -34,8 +32,8 @@ public class HomeController {
     /**
      * @return
      */
-    @GetMapping("/showUsers")
-    public String showUsers(@ModelAttribute UserInfo userInfo) {
+    @GetMapping("/userList")
+    public String showUsers() {
         return "userList";
     }
 
@@ -50,8 +48,8 @@ public class HomeController {
             username = principal.toString();
         }
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("welcome");
         mav.addObject("username", username);
+        mav.setViewName("welcome");
         return mav;
     }
 }
