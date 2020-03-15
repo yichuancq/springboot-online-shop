@@ -78,11 +78,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")  //登录POST请求路径
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .defaultSuccessUrl("/welcome")
-                .successForwardUrl("/welcome")// 登入成功后，跳转至指定页面
+                .successForwardUrl("/welcome").permitAll()// 登入成功后，跳转至指定页面
+//               /设置默认登录成功跳转页面
+                .defaultSuccessUrl("/welcome").permitAll()
                 .successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
 //                .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
-//                .failureUrl("/error")
+                .failureUrl("/error/error").permitAll()
                 .permitAll()
                 .and()
                 .logout()

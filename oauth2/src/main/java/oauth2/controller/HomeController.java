@@ -37,5 +37,4 @@ public class HomeController {
     public String showUsers() {
         return "userList";
     }
-
 }
