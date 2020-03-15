@@ -12,11 +12,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configurable
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -77,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password") //登录密码参数
                 .defaultSuccessUrl("/welcome")
 //              .successForwardUrl("/welcome")
+                .successHandler(customAuthenticationSuccessHandler) // 登录成功处理器
                 .failureUrl("/error")
                 .permitAll()
                 .and()

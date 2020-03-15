@@ -1,6 +1,7 @@
 package oauth2.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import oauth2.domain.base.BaseEntity;
 
 import javax.persistence.*;
@@ -24,12 +25,15 @@ public class SysPermission extends BaseEntity {
     //父编码
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_Id")
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
     @JsonIgnore
     private SysPermission parent;
     //
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER)
     private List<SysPermission> sysPermissionList;
     //
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)//懒加载
     private List<SysRole> sysRoleList;
 

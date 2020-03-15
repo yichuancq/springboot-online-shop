@@ -1,5 +1,7 @@
 package oauth2.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class SysRole {
     private List<UserInfo> userInfoList;
 
     //角色 -- 权限关系：多对多关系;
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "sysRoleList", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<SysPermission> permissions;
 
