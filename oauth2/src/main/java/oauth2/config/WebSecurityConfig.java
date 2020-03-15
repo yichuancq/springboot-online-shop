@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configurable
@@ -21,17 +20,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AuthenticationSuccessHandler customAuthenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler customAuthenticationFailureHandler;
-
+    private AuthenticationSuccessHandler customerSavedRequestAwareAuthenticationSuccessHandler;
 
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    //CustomAuthenticationFailureHandler
-
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -87,10 +79,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")  //登录POST请求路径
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .defaultSuccessUrl("/welcome")
-//              .successForwardUrl("/welcome")
-                .successHandler(customAuthenticationSuccessHandler)//登录成功处理器
-                .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
+                .defaultSuccessUrl("/userList")
+                .successForwardUrl("/userList")// 登入成功后，跳转至指定页面
+                .successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
+//                .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
 //                .failureUrl("/error")
                 .permitAll()
                 .and()
@@ -102,7 +94,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/login?logout");  //退出登录成功URL
     }
-
 
     /**
      * 认证

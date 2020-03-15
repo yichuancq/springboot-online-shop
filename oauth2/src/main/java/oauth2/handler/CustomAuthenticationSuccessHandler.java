@@ -27,7 +27,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         logger.info("登录成功");
         UserInfo userDetails = (UserInfo) authentication.getPrincipal();
 
-        String targetUrl = "/home/welcome";
         httpServletResponse.setContentType("application/json;charset=UTF-8");
         httpServletResponse.getWriter()
                 .write(objectMapper.writeValueAsString(userDetails.getSysRoleList()));
