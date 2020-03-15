@@ -1,40 +1,34 @@
 package oauth2.controller;
 
 import io.swagger.annotations.Api;
+import oauth2.domain.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @Api(value = "HomePage API")
 @RequestMapping("/home")
-//@EnableGlobalMethodSecurity(prePostEnabled = true) // 开启授权
 public class HomeController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * @param userInfo
+     * @return
+     */
     @GetMapping("/login")
-    public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "logout", required = false) String logout) {
+    public ModelAndView login(@ModelAttribute UserInfo userInfo) {
+        logger.info("user name:" + userInfo.getUsername());
         ModelAndView mav = new ModelAndView();
-        if (error != null) {
-            mav.addObject("error", "用户名或者密码不正确");
-        }
-        if (logout != null) {
-            mav.addObject("msg", "退出成功");
-        }
+        mav.addObject("msg", userInfo.getNickname());
         mav.setViewName("login");
         return mav;
-    }
-
-    @GetMapping("/getUser")
-    public String getUsers() {
-        return "Hello Spring Security";
     }
 
     @GetMapping("/welcome")
