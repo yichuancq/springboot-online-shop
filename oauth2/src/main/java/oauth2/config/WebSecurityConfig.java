@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")  //登录POST请求路径
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .defaultSuccessUrl("/welcome")
+                .defaultSuccessUrl("/userList")
 //                .successForwardUrl("/welcome")
                 .failureUrl("/error")
                 .permitAll()

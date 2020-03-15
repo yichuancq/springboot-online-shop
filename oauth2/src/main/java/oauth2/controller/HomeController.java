@@ -31,6 +31,14 @@ public class HomeController {
         return mav;
     }
 
+    /**
+     * @return
+     */
+    @GetMapping("/showUsers")
+    public String showUsers(@ModelAttribute UserInfo userInfo) {
+        return "userList";
+    }
+
     @GetMapping("/welcome")
     public ModelAndView toMainPage() {
         //获取登录的用户名
