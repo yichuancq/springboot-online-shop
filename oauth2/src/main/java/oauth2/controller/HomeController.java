@@ -6,12 +6,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @Api(value = "HomePage API")
+@RequestMapping("/home")
+//@EnableGlobalMethodSecurity(prePostEnabled = true) // 开启授权
 public class HomeController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -29,6 +32,10 @@ public class HomeController {
         return mav;
     }
 
+    @GetMapping("/getUser")
+    public String getUsers() {
+        return "Hello Spring Security";
+    }
 
     @GetMapping("/welcome")
     public ModelAndView toMainPage() {

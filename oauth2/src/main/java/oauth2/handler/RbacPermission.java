@@ -32,7 +32,9 @@ public class RbacPermission {
         Boolean hasPermission = false;
         if (principal instanceof UserInfo) {
             //读取用户所拥有的权限菜单
-            List<SysRole> roles = (List<SysRole>) ((UserInfo) principal).getSysRoleList();
+            UserInfo userInfo = (UserInfo) principal;
+            logger.info("userInfo:{}", userInfo.toString());
+            List<SysRole> roles = userInfo.getSysRoleList();
             if (roles != null) {
                 for (SysRole sysRole : roles) {
                     System.out.println("role name=>" + sysRole.getRole());

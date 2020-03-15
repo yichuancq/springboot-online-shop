@@ -30,8 +30,6 @@ public class UserTests {
     //role
     @Autowired
     private SysRoleService sysRoleService;
-
-
     /**
      * saveUser
      */
@@ -45,8 +43,6 @@ public class UserTests {
         userInfo.setState(state);
         String salt = UUID.randomUUID().toString();
         System.out.println(salt);
-        userInfo.setSalt(salt);
-        //
         userInfoService.saveUser(userInfo);
 
 

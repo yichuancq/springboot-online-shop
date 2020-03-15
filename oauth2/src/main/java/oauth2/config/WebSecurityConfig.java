@@ -17,8 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -64,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/configuration/security").permitAll()
                 // swagger end
                 .anyRequest()
+                //其他所有资源都需要登陆后才能访问
                 .access("@rbacPermission.hasPermission(request, authentication)")//根据账号权限访问
                 .and()
                 .formLogin()
@@ -73,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
                 .defaultSuccessUrl("/welcome")
+//                .successForwardUrl("/welcome")
                 .failureUrl("/error")
                 .permitAll()
                 .and()

@@ -19,7 +19,6 @@ public class UserInfo implements UserDetails {
     private String username;// 用户名
     private String nickname;//（昵称或者真实姓名，不同系统不同定义）
     private String password;// 密码
-    private String salt;//加密密码的盐
     private byte state;//用户状态,0:创建未认证（比如没有激活，没有输入验证码等等）--等待验证的用户 , 1:正常状态,2：用户被锁定.
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -39,6 +38,18 @@ public class UserInfo implements UserDetails {
                 auths.add(new SimpleGrantedAuthority(sysPermission.getPermission()));
         }
         return auths;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", state=" + state +
+                ", sysRoleList=" + sysRoleList +
+                '}';
     }
 
     @Override
@@ -104,13 +115,6 @@ public class UserInfo implements UserDetails {
         this.sysRoleList = sysRoleList;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     public byte getState() {
         return state;
