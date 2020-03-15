@@ -43,10 +43,10 @@ public class CustomerSavedRequestAwareAuthenticationSuccessHandler extends Saved
         /// 认证成功后，获取用户信息并添加到session中
         request.getSession().setAttribute("userInfo", userInfo);
         logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
-
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(userInfo.getSysRoleList()));
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        //
+//        response.setContentType("application/json;charset=UTF-8");
+//        response.getWriter().write(objectMapper.writeValueAsString(userInfo.getSysRoleList()));
+        response.sendRedirect(targetUrl);
         //super.onAuthenticationSuccess(request, response, authentication);
     }
 }

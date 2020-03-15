@@ -1,6 +1,8 @@
 package oauth2.config;
 
 import oauth2.handler.CustomAccessDeniedHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private AuthenticationSuccessHandler customerSavedRequestAwareAuthenticationSuccessHandler;
@@ -42,21 +45,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/layui/**"
         );
     }
-
     /**
      * http请求设置
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        //http.csrf().disable(); //注释就是使用 csrf 功能
+        http.csrf().disable(); //注释就是使用 csrf 功能
         http.headers().frameOptions().disable();//解决 in a frame because it set 'X-Frame-Options' to 'DENY' 问题
         //http.anonymous().disable();
+        http.logout().logoutUrl("/welcome");
         http.authorizeRequests()
                 .antMatchers("/login/**", "/initUserData")//不拦截登录相关方法
                 .permitAll()
+                .antMatchers("/findUserByName/**", "/findUserByName")//不拦截登录相关方法
+                .permitAll()
+                .antMatchers("/welcome/**", "/welcome")//不拦截登录相关方法
+                .permitAll()
+                .antMatchers("/index/**", "/toIndexPage")//不拦截登录相关方法
+                .permitAll()
+                .antMatchers("/logout/**", "/logout")//不拦截登录相关方法
+                .permitAll()
                 //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
-//			.anyRequest()
-//			.authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
+                .anyRequest()
+                .authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
                 // 所有/trace/user/ 的所有请求 都放行
                 .antMatchers("/trace/users/**").permitAll()
                 // swagger start
@@ -82,16 +93,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //               /设置默认登录成功跳转页面
                 .defaultSuccessUrl("/welcome").permitAll()
                 .successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
-//                .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
-                .failureUrl("/error/error").permitAll()
+//               .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
+                .failureUrl("/error").permitAll()
                 .permitAll()
-                .and()
-                .logout()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler) //无权限处理器
                 .and()
-                .logout()
+                .logout().logoutUrl("/welcome")
                 .logoutSuccessUrl("/login?logout");  //退出登录成功URL
     }
 
