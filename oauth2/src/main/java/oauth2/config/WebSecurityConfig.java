@@ -53,7 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //http.anonymous().disable();
         http.authorizeRequests()
                 .antMatchers("/login/**", "/initUserData")//不拦截登录相关方法
-                //.antMatchers("/login/**", "/initUserData")//不拦截登录相关方法
                 .permitAll()
                 //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
 //			.anyRequest()
@@ -79,8 +78,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")  //登录POST请求路径
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .defaultSuccessUrl("/userList")
-                .successForwardUrl("/userList")// 登入成功后，跳转至指定页面
+                .defaultSuccessUrl("/welcome")
+                .successForwardUrl("/welcome")// 登入成功后，跳转至指定页面
                 .successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
 //                .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
 //                .failureUrl("/error")
