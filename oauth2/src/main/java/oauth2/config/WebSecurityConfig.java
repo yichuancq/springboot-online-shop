@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configurable
@@ -23,7 +24,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Autowired
+    private AuthenticationFailureHandler customAuthenticationFailureHandler;
+
+
+    @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    //CustomAuthenticationFailureHandler
+
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -81,8 +89,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password") //登录密码参数
                 .defaultSuccessUrl("/welcome")
 //              .successForwardUrl("/welcome")
-                .successHandler(customAuthenticationSuccessHandler) // 登录成功处理器
-                .failureUrl("/error")
+                .successHandler(customAuthenticationSuccessHandler)//登录成功处理器
+                .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
+//                .failureUrl("/error")
                 .permitAll()
                 .and()
                 .logout()
