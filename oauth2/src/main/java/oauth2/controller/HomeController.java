@@ -7,7 +7,6 @@ import oauth2.service.user.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -37,6 +36,7 @@ public class HomeController {
         mav.setViewName("login");
         return mav;
     }
+
     /**
      * @return
      */
@@ -57,6 +57,6 @@ public class HomeController {
     @PreAuthorize("hasRole('游客') or hasRole('管理员')")
     public ResponseEntity findUserByName(String userName) {
         UserInfo userInfo = userInfoService.findUserByName(userName);
-        return new ResponseEntity<>(userInfo, HttpStatus.OK);
+        return ResponseEntity.ok(userInfo);
     }
 }
