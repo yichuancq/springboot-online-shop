@@ -45,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/layui/**"
         );
     }
+
     /**
      * http请求设置
      */
@@ -55,13 +56,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //http.anonymous().disable();
         http.logout().logoutUrl("/welcome");
         http.authorizeRequests()
-                .antMatchers("/login/**", "/initUserData")//不拦截登录相关方法
+                .antMatchers("/login/**", "/login")//不拦截登录相关方法
                 .permitAll()
                 .antMatchers("/findUserByName/**", "/findUserByName")//不拦截登录相关方法
                 .permitAll()
                 .antMatchers("/welcome/**", "/welcome")//不拦截登录相关方法
                 .permitAll()
-                .antMatchers("/index/**", "/toIndexPage")//不拦截登录相关方法
+                .antMatchers("/index/**", "/index")//不拦截登录相关方法
+                .permitAll()
+                .antMatchers("/userList/**", "/userList")//不拦截登录相关方法
                 .permitAll()
                 .antMatchers("/logout/**", "/logout")//不拦截登录相关方法
                 .permitAll()
@@ -85,13 +88,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/")
-                .loginPage("/login")   //登录请求页
+                .loginPage("/login2")   //登录请求页
                 .loginProcessingUrl("/login")  //登录POST请求路径
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .successForwardUrl("/welcome").permitAll()// 登入成功后，跳转至指定页面
+                .successForwardUrl("/userList").permitAll()// 登入成功后，跳转至指定页面
 //               /设置默认登录成功跳转页面
-                .defaultSuccessUrl("/welcome").permitAll()
+                .defaultSuccessUrl("/userList").permitAll()
                 .successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
 //               .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
                 .failureUrl("/error").permitAll()
@@ -100,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler) //无权限处理器
                 .and()
-                .logout().logoutUrl("/welcome")
+                .logout().logoutUrl("/userList")
                 .logoutSuccessUrl("/login?logout");  //退出登录成功URL
     }
 

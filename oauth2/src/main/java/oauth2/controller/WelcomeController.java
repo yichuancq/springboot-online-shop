@@ -22,20 +22,22 @@ public class WelcomeController {
 
     @ApiOperation(value = "welcome", notes = "welcome")
     @GetMapping("/welcome")
+//    @PostAuthorize("hasRole('管理员') or hasRole('admin')")
     public ModelAndView welcome() {
         //获取登录的用户名
         ModelAndView mav = new ModelAndView();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserInfo userInfo = (UserInfo) principal;
         String username = null;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
+            username = userInfo.getUsername();
         } else {
             username = principal.toString();
         }
         logger.info("user name:{}", username);
-
-        mav.addObject("username", username);
         mav.setViewName("welcome");
+        mav.addObject("userInfo", userInfo);
+        mav.addObject("username", username);
         return mav;
     }
 
@@ -45,12 +47,21 @@ public class WelcomeController {
     }
 
     /**
+     * @return
+     */
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
+
+    /**
      * @param request
      * @param response
      * @return
      */
-    @GetMapping("/index")
-    public String toIndexPage(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/userList")
+    //@PostAuthorize("hasRole('管理员') or hasRole('admin')")
+    public String userList(HttpServletRequest request, HttpServletResponse response) {
         logger.info("toIndexPage");
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         request.setAttribute("userInfo", userInfo);

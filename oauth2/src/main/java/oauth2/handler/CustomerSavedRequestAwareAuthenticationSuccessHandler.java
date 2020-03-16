@@ -33,19 +33,15 @@ public class CustomerSavedRequestAwareAuthenticationSuccessHandler extends Saved
                                         Authentication authentication)
             throws ServletException, IOException {
 
-        String targetUrlParameter = getTargetUrlParameter();
-        logger.info("targetUrlParameter=>{}", targetUrlParameter);
         logger.info("登录成功");
         UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-//        String targetUrl = savedRequest.getRedirectUrl() + "/home/welcome";
         logger.info("登录用户user:{}", userInfo.getUsername());
-        String targetUrl = "/index";
+        String targetUrl = "/welcome";
         /// 认证成功后，获取用户信息并添加到session中
         request.getSession().setAttribute("userInfo", userInfo);
         logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
-        //
-//        response.setContentType("application/json;charset=UTF-8");
-//        response.getWriter().write(objectMapper.writeValueAsString(userInfo.getSysRoleList()));
+//      response.setContentType("application/json;charset=UTF-8");
+//      response.getWriter().write(objectMapper.writeValueAsString(userInfo.getSysRoleList()));
         response.sendRedirect(targetUrl);
         //super.onAuthenticationSuccess(request, response, authentication);
     }

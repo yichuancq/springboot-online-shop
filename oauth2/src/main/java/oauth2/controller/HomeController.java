@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,7 +37,6 @@ public class HomeController {
         mav.setViewName("login");
         return mav;
     }
-
     /**
      * @return
      */
@@ -49,12 +49,12 @@ public class HomeController {
         return mav;
     }
 
-
     /**
      * @return
      */
     @ApiOperation(value = "findUserByName", notes = "findUserByName")
     @GetMapping("/findUserByName")
+    @PreAuthorize("hasRole('游客') or hasRole('管理员')")
     public ResponseEntity findUserByName(String userName) {
         UserInfo userInfo = userInfoService.findUserByName(userName);
         return new ResponseEntity<>(userInfo, HttpStatus.OK);

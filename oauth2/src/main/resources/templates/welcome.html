@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-<h3>welcome</h3>
+<div align="center">
+    <h1>welcome</h1>
+    <label>用户名称:</label>
+    <label th:text="${userInfo.username}"></label>
+    <br>
+    <label>用户密码:</label>
+    <label aria-label="roles:" th:text="${userInfo.password}"></label>
+    <br>
+    <a href="/index">index</a>
+</div>
 </body>
 </html>
