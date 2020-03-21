@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * 账户
  */
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface  AccountRepository extends JpaRepository<Account, Long> {
 }
