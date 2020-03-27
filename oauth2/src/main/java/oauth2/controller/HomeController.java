@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,36 +36,33 @@ public class HomeController {
         HttpSession httpSession = request.getSession();
         logger.error("sessionId:{}", httpSession.getId());
     }
+
     /**
      * @return
      */
     @ApiOperation(value = "logout", notes = "logout")
     @GetMapping("/logout")
-    public ModelAndView loginOut(HttpServletRequest request, HttpServletResponse response) {
+    public String loginOut(HttpServletRequest request, HttpServletResponse response) {
         logger.error("登录退出=>loginOut");
-        ModelAndView mav = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        mav.addObject("msg", "logout");
-        mav.setViewName("logout");
-        return mav;
+        request.setAttribute("msg", "logout");
+        return "logout";
     }
 
     @ApiOperation(value = "loginOutSuccess", notes = "loginOutSuccess")
     @GetMapping("/loginOutSuccess")
-    public ModelAndView loginOutSuccess(HttpServletRequest request, HttpServletResponse response) {
+    public String loginOutSuccess(HttpServletRequest request, HttpServletResponse response) {
         logger.error("登录退出成功=>loginOutSuccess");
-        ModelAndView mav = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         logger.info("用户user:{}", auth.getName());
-        mav.addObject("msg", auth.getName() + ",登录退出成功");
-        mav.setViewName("logoutOutSuccess");
-        return mav;
+        request.setAttribute("msg", auth.getName() + ",登录退出成功");
+        return "logoutOutSuccess";
     }
 
     /**

@@ -13,11 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @author 王杨帅
- * @create 2018-09-08 15:22
- * @desc
- **/
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private Logger logger = LoggerFactory.getLogger(getClass());
