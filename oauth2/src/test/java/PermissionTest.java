@@ -20,7 +20,6 @@ public class PermissionTest {
     private SysRoleService sysRoleService;
     @Autowired
     private SysPermissionService sysPermissionService;
-
     /**
      * 添加权限
      */
@@ -31,13 +30,13 @@ public class PermissionTest {
         //是否存在
         sysPermission.setAvailable(true);
         //权限管理名称
-        sysPermission.setName("商品信息查看");
+        sysPermission.setName("用户信息查看");
         //menu
         sysPermission.setResourceType("menu");
         //权限
         sysPermission.setPermission("goods:view");
         //设置资源路径
-        sysPermission.setUrl("goods/goodsList");
+        sysPermission.setUrl("user/goodsList");
         //
         sysPermission.setParent(null);
         sysPermissionService.saveSysPermission(sysPermission);
@@ -50,18 +49,17 @@ public class PermissionTest {
         SysPermission sysPermission = sysPermissionService.findById(4L);
         List<SysPermission> sysPermissionList = new ArrayList<>();
 
-
         SysPermission sysPermission1 = new SysPermission();
         //是否存在
         sysPermission1.setAvailable(true);
         //权限管理名称
-        sysPermission1.setName("商品信息修改");
+        sysPermission1.setName("用户信息修改");
         //menu
         sysPermission1.setResourceType("menu");
         //权限
         sysPermission1.setPermission("goods:update");
         //设置资源路径
-        sysPermission1.setUrl("goods/update");
+        sysPermission1.setUrl("user/update");
         //
         sysPermission1.setParent(sysPermission);
         ////
@@ -70,13 +68,13 @@ public class PermissionTest {
         //是否存在
         sysPermission2.setAvailable(true);
         //权限管理名称
-        sysPermission2.setName("商品信息删除");
+        sysPermission2.setName("用户信息删除");
         //menu
         sysPermission2.setResourceType("menu");
         //权限
         sysPermission2.setPermission("goods:delete");
         //设置资源路径
-        sysPermission2.setUrl("goods/delete");
+        sysPermission2.setUrl("user/delete");
         //
         sysPermission1.setParent(sysPermission);
         sysPermission2.setParent(sysPermission);

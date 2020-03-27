@@ -1,6 +1,8 @@
 package oauth2.config;
 
 import oauth2.handler.CustomAccessDeniedHandler;
+import oauth2.handler.CustomAuthenticationFailureHandler;
+import oauth2.handler.CustomerSavedRequestAwareAuthenticationSuccessHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +16,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configurable
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    //
-    @Autowired
-    private MyAuthenticationProvider provider;//自定义验证
 
     @Autowired
-    private AuthenticationSuccessHandler customerSavedRequestAwareAuthenticationSuccessHandler;
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
+    @Autowired
+    private CustomerSavedRequestAwareAuthenticationSuccessHandler successHandler;
 
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -49,21 +50,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        //将验证过程交给自定义验证工具
-//        auth.authenticationProvider(provider);
-//    }
-
     /**
      * 认证
      */
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-
     /**
      * 密码加密算法
      *
@@ -87,8 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login/**", "/login")//不拦截登录相关方法
                 .permitAll()
-                .antMatchers("/findUserByName/**", "/findUserByName")//不拦截登录相关方法
-                .permitAll()
                 .antMatchers("/welcome/**", "/welcome")//不拦截登录相关方法
                 .permitAll()
                 .antMatchers("/index/**", "/index")//不拦截登录相关方法
@@ -104,8 +95,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
                 .anyRequest()
                 .authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
-                // 所有/trace/user/ 的所有请求 都放行
-                .antMatchers("/trace/users/**").permitAll()
                 // swagger start
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
@@ -114,26 +103,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/configuration/ui").permitAll()
                 .antMatchers("/configuration/security").permitAll()
-                // swagger end
+                //swagger end
+                .anyRequest()
+                .authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
                 .anyRequest()
                 //其他所有资源都需要登陆后才能访问
                 .access("@rbacPermission.hasPermission(request, authentication)")//根据账号权限访问
                 .and()
                 .formLogin()
-                .loginPage("/login")   //登录请求页
+                .loginPage("/login")
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .successForwardUrl("/index").permitAll()// 登入成功后，跳转至指定页面
-//               /设置默认登录成功跳转页面
+                .successForwardUrl("/index").permitAll()
                 .defaultSuccessUrl("/welcome").permitAll()
-                //.successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
-//               .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
                 .failureUrl("/error").permitAll()
+//               /设置默认登录成功跳转页面
+                .successHandler(successHandler)//登录成功处理器
+                .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler) //无权限处理器
                 .and()
                 .logout().logoutUrl("/logout").permitAll()
-                .logoutSuccessUrl("/loginOutSuccess").permitAll();  //退出登录成功URL
+                .logoutSuccessUrl("/loginOutSuccess").permitAll()
+                .and()
+                .rememberMe()
+//               //设置cookie有效期
+                .tokenValiditySeconds(60 * 60 * 24 * 7);
     }
 }

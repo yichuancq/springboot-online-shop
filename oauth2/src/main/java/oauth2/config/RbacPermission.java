@@ -1,4 +1,4 @@
-package oauth2.handler;
+package oauth2.config;
 
 import oauth2.domain.SysPermission;
 import oauth2.domain.SysRole;
@@ -17,6 +17,7 @@ import java.util.List;
  */
 @Component("rbacPermission")
 public class RbacPermission {
+
     private Logger logger = LoggerFactory.getLogger(getClass());
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -29,7 +30,7 @@ public class RbacPermission {
      */
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
         Object principal = authentication.getPrincipal();
-        Boolean hasPermission = false;
+        boolean hasPermission = false;
         if (principal instanceof UserInfo) {
             //读取用户所拥有的权限菜单
             UserInfo userInfo = (UserInfo) principal;
@@ -38,8 +39,11 @@ public class RbacPermission {
             if (roles != null) {
                 for (SysRole sysRole : roles) {
                     System.out.println("role name=>" + sysRole.getRole());
+                    //菜单
                     for (SysPermission permission : sysRole.getPermissions()) {
                         System.out.println("permission name=>" + permission.getName());
+                        logger.info("permission url=>{}", permission.getUrl());
+                        logger.info("request url=>{}", request.getRequestURI());
                         if (antPathMatcher.match(permission.getUrl(), request.getRequestURI())) {
                             hasPermission = true;
                             break;
@@ -48,6 +52,7 @@ public class RbacPermission {
                 }
             }
         }
+        logger.info("hasPermission:{}",hasPermission);
         return hasPermission;
     }
 }

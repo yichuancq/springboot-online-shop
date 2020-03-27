@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * 访问权限失败
+ */
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -27,8 +29,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         //
         boolean isAjax = ControllerTools.isAjaxRequest(httpServletRequest);
         if (!httpServletResponse.isCommitted()) {
-            String accessDenyMsg = "{\"code\":\"403\",\"msg\":\"没有权限\"}";
             if (isAjax) {
+                String accessDenyMsg = "{\"code\":\"403\",\"msg\":\"没有权限\"}";
                 String msg = e.getMessage();
                 logger.info("accessDeniedException.message:" + msg);
                 ControllerTools.print(httpServletResponse, accessDenyMsg);
@@ -37,7 +39,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                 httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
                 RequestDispatcher dispatcher = httpServletRequest.getRequestDispatcher("/403");
                 dispatcher.forward(httpServletRequest, httpServletResponse);
-                logger.info("accessDeniedException.message:" + accessDenyMsg);
             }
         }
     }

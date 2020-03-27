@@ -34,8 +34,7 @@ public class UserInfo implements UserDetails {
         List<GrantedAuthority> auths = new ArrayList<>();
         List<SysRole> roles = this.getSysRoleList();
         for (SysRole role : roles) {
-            for (SysPermission sysPermission : role.getPermissions())
-                auths.add(new SimpleGrantedAuthority(sysPermission.getPermission()));
+            auths.add(new SimpleGrantedAuthority(role.getRole()));
         }
         return auths;
     }

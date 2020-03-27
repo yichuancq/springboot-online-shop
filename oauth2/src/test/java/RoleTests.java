@@ -31,7 +31,7 @@ public class RoleTests {
         sysRole.setAvailable(true);
         sysRole.setDescription("游客角色");
         sysRole.setPermissions(null);
-        sysRole.setRole("游客");
+        sysRole.setRole("ROLE_USER");
         sysRoleService.saveRole(sysRole);
         System.out.println("" + sysRole.toString());
 
@@ -39,7 +39,7 @@ public class RoleTests {
         sysRole2.setAvailable(true);
         sysRole2.setDescription("管理员角色");
         sysRole2.setPermissions(null);
-        sysRole2.setRole("管理员");
+        sysRole2.setRole("ROLE_ADMIN");
         sysRoleService.saveRole(sysRole2);
         System.out.println("" + sysRole2.toString());
 

@@ -28,7 +28,7 @@ public class WelcomeController {
      */
     @ApiOperation(value = "welcome", notes = "welcome")
     @GetMapping("/welcome")
-    //@PostAuthorize("hasRole('管理员') or hasRole('admin')")
+    @PostAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ModelAndView welcome() throws Exception {
         //获取登录的用户名
         ModelAndView mav = new ModelAndView();
@@ -67,6 +67,7 @@ public class WelcomeController {
      * @return
      */
     @GetMapping("/index")
+    @PostAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public String index() {
         return "index";
     }
@@ -82,21 +83,25 @@ public class WelcomeController {
     }
 
     /**
+     * 有权限验证
+     *
      * @param request
      * @param response
      * @return
      */
     @GetMapping("/userList")
-    @PostAuthorize("hasRole('游客') or hasRole('管理员')")
-    public String userList(HttpServletRequest request, HttpServletResponse response) {
+    @PostAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ModelAndView userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("userList");
+        //获取登录的用户名
+        ModelAndView mav = new ModelAndView();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         request.setAttribute("userInfo", userInfo);
         //sysRoleList
         request.setAttribute("sysRoleList", userInfo.getSysRoleList());
         logger.info("userInfo:{}", userInfo.toString());
-        return "userList";
+        request.setAttribute("username", userInfo.getUsername());
+        mav.setViewName("userList");
+        return mav;
     }
-
-
 }
