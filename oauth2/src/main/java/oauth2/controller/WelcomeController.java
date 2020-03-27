@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import oauth2.domain.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 public class WelcomeController {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * 欢迎界面
+     *
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "welcome", notes = "welcome")
     @GetMapping("/welcome")
     //@PostAuthorize("hasRole('管理员') or hasRole('admin')")
@@ -44,12 +51,19 @@ public class WelcomeController {
         return mav;
     }
 
+    /**
+     * 错误页面
+     *
+     * @return
+     */
     @GetMapping("/error")
     public String toErrorPage() {
         return "error";
     }
 
     /**
+     * 首页
+     *
      * @return
      */
     @GetMapping("/index")
@@ -58,12 +72,22 @@ public class WelcomeController {
     }
 
     /**
+     * 无权限处理页面
+     *
+     * @return
+     */
+    @GetMapping("/403")
+    public String page403() {
+        return "403";
+    }
+
+    /**
      * @param request
      * @param response
      * @return
      */
     @GetMapping("/userList")
-//  @PreAuthorize("hasRole('游客') or hasRole('管理员')")
+    @PostAuthorize("hasRole('游客') or hasRole('管理员')")
     public String userList(HttpServletRequest request, HttpServletResponse response) {
         logger.info("userList");
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -15,11 +15,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 
 @Controller
 @Api(value = "HomeController")
@@ -30,19 +29,14 @@ public class HomeController {
     private UserInfoService userInfoService;
 
     /**
-     * @param userInfo
      * @return
      */
     @ApiOperation(value = "login", notes = "login")
     @GetMapping("/login")
-    public ModelAndView login(@ModelAttribute UserInfo userInfo) {
-        logger.info("user name:" + userInfo.getUsername());
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("msg", userInfo.getNickname());
-        mav.setViewName("login");
-        return mav;
+    public void login(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+        logger.error("sessionId:{}", httpSession.getId());
     }
-
     /**
      * @return
      */
@@ -69,8 +63,8 @@ public class HomeController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        logger.info("用户user:{}",auth.getName());
-        mav.addObject("msg", auth.getName()+",登录退出成功");
+        logger.info("用户user:{}", auth.getName());
+        mav.addObject("msg", auth.getName() + ",登录退出成功");
         mav.setViewName("logoutOutSuccess");
         return mav;
     }

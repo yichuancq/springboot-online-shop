@@ -21,6 +21,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    //
+    @Autowired
+    private MyAuthenticationProvider provider;//自定义验证
 
     @Autowired
     private AuthenticationSuccessHandler customerSavedRequestAwareAuthenticationSuccessHandler;
@@ -46,6 +49,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        //将验证过程交给自定义验证工具
+//        auth.authenticationProvider(provider);
+//    }
+
+    /**
+     * 认证
+     */
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    /**
+     * 密码加密算法
+     *
+     * @return
+     */
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+
+    }
+
     /**
      * http请求设置
      */
@@ -64,7 +93,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/index/**", "/index")//不拦截登录相关方法
                 .permitAll()
-                .antMatchers("/userList/**", "/userList").permitAll()
+                .antMatchers("/403/**", "/403")//不拦截登录相关方法
+                .permitAll()
+//                .antMatchers("/userList/**", "/userList")
                 //.hasRole("管理员")
                 .antMatchers("/logout/**", "/logout")//不拦截登录相关方法
                 .permitAll()
@@ -104,24 +135,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/logout").permitAll()
                 .logoutSuccessUrl("/loginOutSuccess").permitAll();  //退出登录成功URL
-    }
-
-    /**
-     * 认证
-     */
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    /**
-     * 密码加密算法
-     *
-     * @return
-     */
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-
     }
 }

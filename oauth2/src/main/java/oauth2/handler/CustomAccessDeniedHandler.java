@@ -27,16 +27,17 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         //
         boolean isAjax = ControllerTools.isAjaxRequest(httpServletRequest);
         if (!httpServletResponse.isCommitted()) {
+            String accessDenyMsg = "{\"code\":\"403\",\"msg\":\"没有权限\"}";
             if (isAjax) {
                 String msg = e.getMessage();
                 logger.info("accessDeniedException.message:" + msg);
-                String accessDenyMsg = "{\"code\":\"403\",\"msg\":\"没有权限\"}";
                 ControllerTools.print(httpServletResponse, accessDenyMsg);
             } else {
                 httpServletRequest.setAttribute(WebAttributes.ACCESS_DENIED_403, e);
                 httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
                 RequestDispatcher dispatcher = httpServletRequest.getRequestDispatcher("/403");
                 dispatcher.forward(httpServletRequest, httpServletResponse);
+                logger.info("accessDeniedException.message:" + accessDenyMsg);
             }
         }
     }
