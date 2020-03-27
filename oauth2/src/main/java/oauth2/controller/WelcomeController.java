@@ -82,6 +82,18 @@ public class WelcomeController {
         return "403";
     }
 
+
+    /**
+     * 提示无权限
+     *
+     * @return
+     */
+    @GetMapping("/userAdd")
+    @PostAuthorize("hasRole('ROLE_USER')")
+    public String userAdd() {
+        return "userAdd";
+    }
+
     /**
      * 有权限验证
      *
