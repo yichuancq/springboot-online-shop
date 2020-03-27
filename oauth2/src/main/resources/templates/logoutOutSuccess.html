@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
-
 <body>
 <div align="center">
-    <h1>spring boot oauth2 demo</h1>
-    <a href="/login">登录</a>&nbsp;&nbsp;&nbsp;<a href="/logout">注销</a>
+    <h1>logout success</h1>
+    <br>
+    <label th:text="${msg}"></label>
+    <br>
 </div>
 </body>
 </html>

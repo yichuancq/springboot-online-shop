@@ -64,9 +64,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/index/**", "/index")//不拦截登录相关方法
                 .permitAll()
-                .antMatchers("/userList/**", "/userList")//不拦截登录相关方法
-                .permitAll()
+                .antMatchers("/userList/**", "/userList").permitAll()
+                //.hasRole("管理员")
                 .antMatchers("/logout/**", "/logout")//不拦截登录相关方法
+                .permitAll()
+                .antMatchers("/loginOutSuccess/**", "/loginOutSuccess")//不拦截登录相关方法
                 .permitAll()
                 //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
                 .anyRequest()
@@ -87,24 +89,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .access("@rbacPermission.hasPermission(request, authentication)")//根据账号权限访问
                 .and()
                 .formLogin()
-                .loginPage("/")
-                .loginPage("/login2")   //登录请求页
-                .loginProcessingUrl("/login")  //登录POST请求路径
+                .loginPage("/login")   //登录请求页
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .successForwardUrl("/userList").permitAll()// 登入成功后，跳转至指定页面
+                .successForwardUrl("/index").permitAll()// 登入成功后，跳转至指定页面
 //               /设置默认登录成功跳转页面
-                .defaultSuccessUrl("/userList").permitAll()
-                .successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
+                .defaultSuccessUrl("/welcome").permitAll()
+                //.successHandler(customerSavedRequestAwareAuthenticationSuccessHandler)//登录成功处理器
 //               .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
                 .failureUrl("/error").permitAll()
-                .permitAll()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler) //无权限处理器
                 .and()
-                .logout().logoutUrl("/userList")
-                .logoutSuccessUrl("/login?logout");  //退出登录成功URL
+                .logout().logoutUrl("/logout").permitAll()
+                .logoutSuccessUrl("/loginOutSuccess").permitAll();  //退出登录成功URL
     }
 
     /**

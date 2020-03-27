@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @Controller
 @Api(value = "WelcomeController")
 public class WelcomeController {
@@ -22,11 +21,15 @@ public class WelcomeController {
 
     @ApiOperation(value = "welcome", notes = "welcome")
     @GetMapping("/welcome")
-//    @PostAuthorize("hasRole('管理员') or hasRole('admin')")
-    public ModelAndView welcome() {
+    //@PostAuthorize("hasRole('管理员') or hasRole('admin')")
+    public ModelAndView welcome() throws Exception {
         //获取登录的用户名
         ModelAndView mav = new ModelAndView();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal == null) {
+            logger.error("principal == null");
+            throw new Exception("principal == nul");
+        }
         UserInfo userInfo = (UserInfo) principal;
         String username = null;
         if (principal instanceof UserDetails) {
@@ -60,9 +63,9 @@ public class WelcomeController {
      * @return
      */
     @GetMapping("/userList")
-    //@PostAuthorize("hasRole('管理员') or hasRole('admin')")
+//  @PreAuthorize("hasRole('游客') or hasRole('管理员')")
     public String userList(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("toIndexPage");
+        logger.info("userList");
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         request.setAttribute("userInfo", userInfo);
         //sysRoleList
