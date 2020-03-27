@@ -31,6 +31,7 @@ public class RoleTests {
         sysRole.setAvailable(true);
         sysRole.setDescription("游客角色");
         sysRole.setPermissions(null);
+        //另外需要注意的是这里匹配的字符串需要添加前缀"ROLE_"
         sysRole.setRole("ROLE_USER");
         sysRoleService.saveRole(sysRole);
         System.out.println("" + sysRole.toString());

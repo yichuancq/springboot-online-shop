@@ -1,7 +1,81 @@
 # springboot-online-shop
 
 - oauth2模块
+```java
+//懒加载 不会查询role表
+@ManyToMany(mappedBy = "sysRoleList", fetch = FetchType.LAZY)
+private List<UserInfo> userInfoList;
 
+//角色 -- 权限关系：多对多关系;
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
+@ManyToMany(mappedBy = "sysRoleList", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+private List<SysPermission> permissions;
+```
+
+
+```java
+//
+@Override
+public void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable(); //注释就是使用 csrf 功能
+    http.headers().frameOptions().disable();//解决 in a frame because it set 'X-Frame-Options' to 'DENY' 问题
+    //http.anonymous().disable();
+    http.logout().logoutUrl("/welcome");
+    http.authorizeRequests()
+            .antMatchers("/login/**", "/login")//不拦截登录相关方法
+            .permitAll()
+            .antMatchers("/welcome/**", "/welcome")//不拦截登录相关方法
+            .permitAll()
+            .antMatchers("/index/**", "/index")//不拦截登录相关方法
+            .permitAll()
+            .antMatchers("/403/**", "/403")//不拦截登录相关方法
+            .permitAll()
+//                .antMatchers("/userList/**", "/userList")
+            //.hasRole("管理员")
+            .antMatchers("/logout/**", "/logout")//不拦截登录相关方法
+            .permitAll()
+            .antMatchers("/loginOutSuccess/**", "/loginOutSuccess")//不拦截登录相关方法
+            .permitAll()
+            //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
+            .anyRequest()
+            .authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
+            // swagger start
+            .antMatchers("/swagger-ui.html").permitAll()
+            .antMatchers("/swagger-resources/**").permitAll()
+            .antMatchers("/images/**").permitAll()
+            .antMatchers("/webjars/**").permitAll()
+            .antMatchers("/v2/api-docs").permitAll()
+            .antMatchers("/configuration/ui").permitAll()
+            .antMatchers("/configuration/security").permitAll()
+            //swagger end
+            .anyRequest()
+            .authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
+            .anyRequest()
+            //其他所有资源都需要登陆后才能访问
+            .access("@rbacPermission.hasPermission(request, authentication)")//根据账号权限访问
+            .and()
+            .formLogin()
+            .loginPage("/login")
+            .usernameParameter("username") //登录用户名参数
+            .passwordParameter("password") //登录密码参数
+            .successForwardUrl("/index").permitAll()
+            .defaultSuccessUrl("/welcome").permitAll()
+            .failureUrl("/error").permitAll()
+//               /设置默认登录成功跳转页面
+            .successHandler(successHandler)//登录成功处理器
+            .failureHandler(customAuthenticationFailureHandler)//登录失败处理器
+            .and()
+            .exceptionHandling()
+            .accessDeniedHandler(customAccessDeniedHandler) //无权限处理器
+            .and()
+            .logout().logoutUrl("/logout").permitAll()
+            .logoutSuccessUrl("/loginOutSuccess").permitAll()
+            .and()
+            .rememberMe()
+//               //设置cookie有效期
+            .tokenValiditySeconds(60 * 60 * 24 * 7);
+}
+```
 - 商品模块
 
 - 会员模块
