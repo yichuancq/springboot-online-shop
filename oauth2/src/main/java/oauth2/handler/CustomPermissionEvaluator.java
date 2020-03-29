@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Component
 public class CustomPermissionEvaluator implements PermissionEvaluator {
+    private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Autowired
     private SysPermissionService permissionService;
@@ -33,8 +35,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         for (SysRole sysRole : roles) {
             for (SysPermission sysPermission : sysRole.getPermissions()) {
                 // 如果访问的Url和权限用户符合的话，返回true
-                if (targetUrl.equals(sysPermission.getUrl()) &&
-                        sysPermission.getPermission().equals(targetPermission)) {
+                if (antPathMatcher.match(String.valueOf(targetUrl), sysPermission.getUrl()) &&
+                        antPathMatcher.match(sysPermission.getPermission(),
+                                String.valueOf(targetPermission))) {
                     return true;
                 }
             }
