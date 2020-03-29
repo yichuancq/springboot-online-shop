@@ -102,7 +102,8 @@ public class WelcomeController {
      */
     @ApiOperation(value = "userAdd", notes = "userAdd")
     @GetMapping("/userAdd")
-    @PostAuthorize("hasRole('ROLE_ADMIN') and hasAuthority('ROLE_ADMIN')")
+//  @PostAuthorize("hasRole('ROLE_ADMIN') and hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and hasPermission('/userAdd','sys:user:add')")
     public ModelAndView userAdd(HttpServletRequest request, HttpServletResponse response) {
         logger.info("用户添加");
         ModelAndView mav = new ModelAndView();
