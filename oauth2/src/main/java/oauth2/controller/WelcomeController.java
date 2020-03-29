@@ -6,6 +6,7 @@ import oauth2.domain.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class WelcomeController {
      */
     @ApiOperation(value = "welcome", notes = "welcome")
     @GetMapping("/welcome")
-    @PostAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ModelAndView welcome() throws Exception {
         //获取登录的用户名
         ModelAndView mav = new ModelAndView();
@@ -88,10 +89,28 @@ public class WelcomeController {
      *
      * @return
      */
+    @ApiOperation(value = "userDelete", notes = "userDelete")
+    @GetMapping("/userDelete")
+    @PostAuthorize("hasRole('ROLE_ADMIN')")
+    public String userDelete() {
+        logger.info("用户删除");
+        return "userDelete";
+    }
+
+    /**
+     * @return
+     */
+    @ApiOperation(value = "userAdd", notes = "userAdd")
     @GetMapping("/userAdd")
-    @PostAuthorize("hasRole('ROLE_USER')")
-    public String userAdd() {
-        return "userAdd";
+    @PostAuthorize("hasRole('ROLE_ADMIN') and hasAuthority('ROLE_ADMIN')")
+    public ModelAndView userAdd(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("用户添加");
+        ModelAndView mav = new ModelAndView();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userInfo", userInfo);
+        logger.info("userInfo:{}", userInfo.toString());
+        mav.setViewName("userAdd");
+        return mav;
     }
 
     /**

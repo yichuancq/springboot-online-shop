@@ -24,6 +24,9 @@ public class UserInfo implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<SysRole> sysRoleList;// 用户权限集合
 
+    public UserInfo() {
+    }
+
     /**
      * 解析用户权限
      *
@@ -31,12 +34,12 @@ public class UserInfo implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> auths = new ArrayList<>();
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         List<SysRole> roles = this.getSysRoleList();
         for (SysRole role : roles) {
-            auths.add(new SimpleGrantedAuthority(role.getRole()));
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
-        return auths;
+        return grantedAuthorities;
     }
 
     @Override

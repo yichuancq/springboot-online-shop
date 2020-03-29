@@ -52,7 +52,7 @@ public class RbacPermission {
                 }
             }
         }
-        logger.info("hasPermission:{}",hasPermission);
+        logger.info("hasPermission:{}", hasPermission);
         return hasPermission;
     }
 }

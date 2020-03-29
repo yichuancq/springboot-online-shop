@@ -30,7 +30,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (userInfo == null) {
             throw new UsernameNotFoundException("用户名称不存在");
         }
-        //填充权限菜单
         return userInfo;
     }
 }

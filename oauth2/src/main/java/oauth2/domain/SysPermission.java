@@ -21,7 +21,6 @@ public class SysPermission extends BaseEntity {
     private String url;//资源路径.
     private String permission;
     private Boolean available = Boolean.FALSE;
-    //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
     //父编码
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_Id")

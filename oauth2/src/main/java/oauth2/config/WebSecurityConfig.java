@@ -19,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configurable
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -57,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
     /**
      * 密码加密算法
      *
@@ -86,9 +87,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/403/**", "/403")//不拦截登录相关方法
                 .permitAll()
-//                .antMatchers("/userList/**", "/userList")
-                //.hasRole("管理员")
                 .antMatchers("/logout/**", "/logout")//不拦截登录相关方法
+                .permitAll()
+                .antMatchers("/favicon.ico/**", "/favicon.ico")//不拦截相关方法
                 .permitAll()
                 .antMatchers("/loginOutSuccess/**", "/loginOutSuccess")//不拦截登录相关方法
                 .permitAll()

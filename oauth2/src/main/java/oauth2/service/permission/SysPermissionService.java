@@ -3,6 +3,8 @@ package oauth2.service.permission;
 
 import oauth2.domain.SysPermission;
 
+import java.util.List;
+
 /**
  * 权限
  */
@@ -15,8 +17,19 @@ public interface SysPermissionService {
     void saveSysPermission(SysPermission sysPermission);
 
     /**
+     * @param sysPermissions
+     */
+    void saveSysPermissions(List<SysPermission> sysPermissions);
+
+    /**
      * @param id
      * @return
      */
     SysPermission findById(Long id);
+
+    /**
+     * @param ids
+     * @return
+     */
+    List<SysPermission> findByIds(List<Long> ids);
 }

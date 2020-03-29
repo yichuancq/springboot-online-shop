@@ -1,4 +1,3 @@
-
 import oauth2.Oauth2App;
 import oauth2.domain.SysPermission;
 import oauth2.domain.SysRole;
@@ -20,6 +19,7 @@ public class PermissionTest {
     private SysRoleService sysRoleService;
     @Autowired
     private SysPermissionService sysPermissionService;
+
     /**
      * 添加权限
      */
@@ -96,12 +96,10 @@ public class PermissionTest {
     public void modPermissionRole() {
         //
         SysRole sysRole = sysRoleService.findRoleById(2L);
-        //
         System.out.println("" + sysRole.toString());
-        SysPermission sysPermission = sysPermissionService.findById(4L);
+        SysPermission sysPermission = sysPermissionService.findById(7L);
         //
         List<SysRole> sysRoleList = new ArrayList<>();
-        //
         sysRoleList.add(sysRole);
         sysPermission.setSysRoleList(sysRoleList);
         sysPermissionService.saveSysPermission(sysPermission);
