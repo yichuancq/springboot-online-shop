@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:;base64,=">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+<div align="center" class="table-responsive">
+    <h1>show roles</h1>
+    <!-- userInfo-->
+    欢迎你:<label th:text="${userInfo.username}"></label>
+    <br/>
+
+    <br/>
+    <!--循环打印角色信息-->
+    <table class="table table-striped" style="width:80%">
+        <div align="center">
+            <!-- 表示一个成功的或积极的动作 -->
+            <button type="button" class="btn btn-success" id="addRoleBtn">
+                add Role
+            </button>
+        </div>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>描述</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tr th:each="sysRoleList:${sysRoleList}">
+            <input type="hidden" name="roleId" value="sysRoleList.id">
+            <td th:text="${sysRoleList.id}"/>
+            <td th:text="${sysRoleList.role}"/>
+            <td th:text="${sysRoleList.description}"/>
+            <td>
+                <a th:href="@{modRole(roleId=${sysRoleList.id})}">修改</a>
+                <a th:href="@{deleteRole(roleId=${sysRoleList.id})}">删除</a>
+            </td>
+        </tr>
+    </table>
+    <br/>
+</div>
+<script>
+$(function() {
+    $("#addRoleBtn").click(function(){
+       window.location.href="/userList";
+    });
+});
+
+
+</script>
+</body>
+</html>

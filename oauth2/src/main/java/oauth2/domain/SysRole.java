@@ -69,4 +69,11 @@ public class SysRole {
         this.permissions = permissions;
     }
 
+    public List<UserInfo> getUserInfoList() {
+        return userInfoList;
+    }
+
+    public void setUserInfoList(List<UserInfo> userInfoList) {
+        this.userInfoList = userInfoList;
+    }
 }

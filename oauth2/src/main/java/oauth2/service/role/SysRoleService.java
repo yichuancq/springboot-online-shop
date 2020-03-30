@@ -3,6 +3,8 @@ package oauth2.service.role;
 
 import oauth2.domain.SysRole;
 
+import java.util.List;
+
 /**
  * 角色
  */
@@ -20,4 +22,10 @@ public interface SysRoleService {
      */
     SysRole findRoleById(Long id);
 
+    void deleteRoleById(Long id);
+
+    /**
+     * @return
+     */
+    List<SysRole> findAll();
 }

@@ -106,6 +106,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/loginOutSuccess/**", "/loginOutSuccess")//不拦截登录相关方法
                 .permitAll()
+                ///addRole
+                .antMatchers("/addRole/**", "/addRole")//不拦截登录相关方法
+                .permitAll()
+                //roleList
+                .antMatchers("/roleList/**", "/toRoleListPage")//不拦截登录相关方法
+                .permitAll()
+                .antMatchers("/deleteRole/**", "/deleteRole")//不拦截登录相关方法
+                .permitAll()
                 //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
                 .anyRequest()
                 .authenticated()// 任何尚未匹配的URL只需要验证用户即可访问
