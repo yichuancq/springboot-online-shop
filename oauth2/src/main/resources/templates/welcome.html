@@ -4,28 +4,48 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="icon" href="data:;base64,=">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 <div align="center">
     <h1>welcome</h1>
     <label>用户名称:</label>
-    <label th:text="${userInfo.username}"></label>
+    <label th:text="${userInfo.username}"></label> &nbsp;&nbsp;&nbsp;<a href="/login">back</a>
     <br>
-    <!--请求URL-->
-    <a href="/index">index</a>
     <br>
+    <div align="center">
+        <!-- 表示一个成功的或积极的动作 -->
+        <button type="button" class="btn btn-success" id="userBtn">
+            用户管理
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-success" id="roleBtn">
+            角色管理
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-success" id="permissionBtn">
+            权限管理
+        </button>
+    </div>
     <!--请求URL-->
-    <a href="/userAdd">add user</a>
-    <br>
-    <!--请求URL-->
-    <a href="/userMod">update user</a>
-    <br>
-    <!--请求URL-->
-    <a href="/userDelete">delete user</a>
-    <br>
-    <!--请求URL-->
-    <a href="/userList">show users</a>
 </div>
+<script>
+$(function() {
+     $("#userBtn").click(function(){
+         window.location.href="/userList";
+     });
+
+    $("#roleBtn").click(function(){
+        window.location.href="/roleList";
+     });
+
+    $("#permissionBtn").click(function(){
+         window.location.href="/permissionList";
+    });
+});
+</script>
+
 </body>
 </html>

@@ -112,6 +112,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //roleList
                 .antMatchers("/roleList/**", "/toRoleListPage")//不拦截登录相关方法
                 .permitAll()
+                .antMatchers("/permissionList/**", "/toPermissionListPage")//不拦截登录相关方法
+                .permitAll()
                 .antMatchers("/deleteRole/**", "/deleteRole")//不拦截登录相关方法
                 .permitAll()
                 //.antMatchers("/user").hasRole("ADMIN")  // user接口只有ADMIN角色的可以访问
@@ -134,9 +136,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                //.loginPage("/login")
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .successForwardUrl("/index").permitAll()
+                .successForwardUrl("/login").permitAll()
                 .defaultSuccessUrl("/welcome").permitAll()
                 .failureUrl("/error").permitAll()
 //               /设置默认登录成功跳转页面

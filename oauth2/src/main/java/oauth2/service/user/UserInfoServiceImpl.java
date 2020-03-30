@@ -5,6 +5,8 @@ import oauth2.repository.user.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  *
  */
@@ -37,5 +39,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     public void saveUser(UserInfo userInfo) {
         assert (userInfo != null);
         userInfoRepository.save(userInfo);
+    }
+
+    @Override
+    public List<UserInfo> findAll() {
+        return userInfoRepository.findAll();
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        userInfoRepository.deleteById(id);
     }
 }

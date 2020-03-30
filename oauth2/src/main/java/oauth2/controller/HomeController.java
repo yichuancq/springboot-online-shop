@@ -3,76 +3,81 @@ package oauth2.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import oauth2.domain.UserInfo;
-import oauth2.service.user.UserInfoService;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Api(value = "HomeController")
 public class HomeController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private UserInfoService userInfoService;
-
     /**
+     * 欢迎界面
+     *
      * @return
+     * @throws Exception
      */
-    @ApiOperation(value = "login", notes = "login")
-    @GetMapping("/login")
-    public void login(HttpServletRequest request) {
-        HttpSession httpSession = request.getSession();
-        logger.error("sessionId:{}", httpSession.getId());
-    }
-
-    /**
-     * @return
-     */
-    @ApiOperation(value = "logout", notes = "logout")
-    @GetMapping("/logout")
-    public String loginOut(HttpServletRequest request, HttpServletResponse response) {
-        logger.error("登录退出=>loginOut");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
+    @ApiOperation(value = "welcome", notes = "welcome")
+    @GetMapping("/welcome")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ModelAndView welcome() throws Exception {
+        //获取登录的用户名
+        ModelAndView mav = new ModelAndView();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal == null) {
+            logger.error("principal == null");
+            throw new Exception("principal == nul");
         }
-        request.setAttribute("msg", "logout");
-        return "logout";
+        UserInfo userInfo = (UserInfo) principal;
+        String username = null;
+        if (principal instanceof UserDetails) {
+            username = userInfo.getUsername();
+        } else {
+            username = principal.toString();
+        }
+        logger.info("user name:{}", username);
+        mav.setViewName("welcome");
+        mav.addObject("userInfo", userInfo);
+        mav.addObject("username", username);
+        return mav;
     }
 
-    @ApiOperation(value = "loginOutSuccess", notes = "loginOutSuccess")
-    @GetMapping("/loginOutSuccess")
-    public String loginOutSuccess(HttpServletRequest request, HttpServletResponse response) {
-        logger.error("登录退出成功=>loginOutSuccess");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        logger.info("用户user:{}", auth.getName());
-        request.setAttribute("msg", auth.getName() + ",登录退出成功");
-        return "logoutOutSuccess";
+
+    /**
+     * 错误页面
+     *
+     * @return
+     */
+    @GetMapping("/error")
+    public String toErrorPage() {
+        return "error";
     }
 
     /**
+     * 首页
+     *
      * @return
      */
-    @ApiOperation(value = "findUserByName", notes = "findUserByName")
-    @GetMapping("/findUserByName")
-    @PreAuthorize("hasRole('游客') or hasRole('管理员')")
-    public ResponseEntity findUserByName(String userName) {
-        UserInfo userInfo = userInfoService.findUserByName(userName);
-        return ResponseEntity.ok(userInfo);
+    @GetMapping("/index")
+    @PostAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public String index() {
+        return "index";
+    }
+
+    /**
+     * 无权限处理页面
+     *
+     * @return
+     */
+    @GetMapping("/403")
+    public String page403() {
+        return "403";
     }
 }

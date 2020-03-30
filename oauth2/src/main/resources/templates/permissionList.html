@@ -10,11 +10,12 @@
 </head>
 
 <body>
+
 <div align="center" class="table-responsive">
-    <h1>show roles</h1>
+    <h1>show permission</h1>
     <!-- userInfo-->
     欢迎你:<label th:text="${userInfo.username}"></label>
-    &nbsp;&nbsp;&nbsp;<a href="/welcome">back</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/welcome">back</a>
     <br/>
 
     <br/>
@@ -23,31 +24,50 @@
         <div align="center">
             <!-- 表示一个成功的或积极的动作 -->
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-                添加Role
+                添加权限
             </button>
+            &nbsp;&nbsp;&nbsp;
+            <!--            <button type="button" class="btn btn-success" id="myButton">-->
+            <!--                show Role-->
+            <!--            </button>-->
         </div>
         <thead>
         <tr>
             <th>ID</th>
-            <th>名称</th>
+            <th>角色名称</th>
             <th>描述</th>
+        </tr>
+        </thead>
+        <tr th:each="sysRoleList:${sysRoleList}" class="success">
+            <td th:text="${sysRoleList.id}"/>
+            <td th:text="${sysRoleList.role}"/>
+            <td th:text="${sysRoleList.description}"/>
+        </tr>
+    </table>
+    <br/>
+    <table class="table table-striped" style="width:80%">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>权限</th>
+            <th>URL</th>
             <th>createTime</th>
             <th>操作</th>
         </tr>
         </thead>
-        <tr th:each="sysRoleList:${sysRoleList}">
-            <input type="hidden" name="roleId" value="sysRoleList.id">
-            <td th:text="${sysRoleList.id}"/>
-            <td th:text="${sysRoleList.role}"/>
-            <td th:text="${sysRoleList.description}"/>
-            <td th:text="${sysRoleList.createTime}"/>
+        <tr th:each="sysPermissionList:${sysPermissionList}">
+            <td th:text="${sysPermissionList.id}"/>
+            <td th:text="${sysPermissionList.name}"/>
+            <td th:text="${sysPermissionList.permission}"/>
+            <td th:text="${sysPermissionList.url}"/>
+            <td th:text="${sysPermissionList.createTime}"/>
             <td>
-                <a th:href="@{modRole(roleId=${sysRoleList.id})}">修改</a>
-                <a th:href="@{deleteRole(roleId=${sysRoleList.id})}">删除</a>
+                <button type="button" class="btn btn-success">修改</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-success">删除</button>
             </td>
         </tr>
     </table>
-    <br/>
 </div>
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -86,6 +106,12 @@
     </div><!-- /.modal -->
 </div>
 <script>
+$(function() {
+    $("#myButton").click(function(){
+       window.location.href="/roleList";
+    });
+});
+
 </script>
 </body>
 </html>
