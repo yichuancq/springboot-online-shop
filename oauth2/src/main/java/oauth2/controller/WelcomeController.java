@@ -110,7 +110,7 @@ public class WelcomeController {
      * @return
      */
     @GetMapping("/userList")
-    @PostAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PostAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("userList");
         //获取登录的用户名

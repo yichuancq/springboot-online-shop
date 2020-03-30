@@ -43,7 +43,7 @@ public class PermissionTest {
         //权限
         sysPermission.setPermission("sys:user:show");
         //设置资源路径
-        sysPermission.setUrl("userList");
+        sysPermission.setUrl("/userList");
         //
         sysPermission.setParent(null);
         sysPermissionService.saveSysPermission(sysPermission);

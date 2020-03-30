@@ -79,6 +79,4 @@ public class RoleController {
         request.setAttribute("sysRoleList", sysRoleList);
         return "roleList";
     }
-
-
 }
