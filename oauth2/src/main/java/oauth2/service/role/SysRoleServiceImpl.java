@@ -38,6 +38,12 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    public SysRole findRoleByRoleName(String roleName) {
+        assert (roleName != null);
+        return sysRoleRepository.findByRole(roleName);
+    }
+
+    @Override
     public void deleteRoleById(Long id) {
         sysRoleRepository.deleteById(id);
     }

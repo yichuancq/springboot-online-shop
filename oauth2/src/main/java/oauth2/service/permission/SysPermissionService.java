@@ -28,6 +28,12 @@ public interface SysPermissionService {
     SysPermission findById(Long id);
 
     /**
+     *
+     * @param permission
+     * @return
+     */
+    SysPermission findSysPermissionByPermission(String permission);
+    /**
      * @param ids
      * @return
      */

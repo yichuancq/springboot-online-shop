@@ -22,6 +22,12 @@ public interface SysRoleService {
      */
     SysRole findRoleById(Long id);
 
+    /**
+     * @param roleName
+     * @return
+     */
+    SysRole findRoleByRoleName(String roleName);
+
     void deleteRoleById(Long id);
 
     /**

@@ -52,6 +52,7 @@
             <th>名称</th>
             <th>权限</th>
             <th>URL</th>
+            <th>createTime</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -60,6 +61,7 @@
             <td th:text="${sysPermissionList.name}"/>
             <td th:text="${sysPermissionList.permission}"/>
             <td th:text="${sysPermissionList.url}"/>
+            <td th:text="${sysPermissionList.createTime}"/>
             <td>
                 <button type="button" class="btn btn-success">修改</button>&nbsp;&nbsp;
                 <button type="button" class="btn btn-success">删除</button>

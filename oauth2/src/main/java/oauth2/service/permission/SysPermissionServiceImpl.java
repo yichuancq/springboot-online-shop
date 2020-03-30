@@ -5,6 +5,7 @@ import oauth2.domain.SysPermission;
 import oauth2.repository.permission.SysPermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,12 @@ public class SysPermissionServiceImpl implements SysPermissionService {
             sysPermission = permission.get();
         }
         return sysPermission;
+    }
+
+    @Override
+    public SysPermission findSysPermissionByPermission(String permission) {
+        assert (!StringUtils.isEmpty(permission));
+        return sysPermissionRepository.findByPermission(permission);
     }
 
     /**

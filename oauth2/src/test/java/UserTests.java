@@ -30,6 +30,7 @@ public class UserTests {
     //role
     @Autowired
     private SysRoleService sysRoleService;
+
     /**
      * saveUser
      */
@@ -86,7 +87,7 @@ public class UserTests {
         UserInfo userInfo = userInfoService.findUserByName("admin");
         List<SysRole> sysRoleList = new ArrayList<>();
         //找到管理员角色
-        SysRole sysRole = sysRoleService.findRoleById(2L);
+        SysRole sysRole = sysRoleService.findRoleByRoleName("ROLE_ADMIN");
         sysRoleList.add(sysRole);//add role
         assert (userInfo != null);
         Byte userState = 1;  //用户状态

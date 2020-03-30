@@ -5,6 +5,8 @@ import oauth2.service.permission.SysPermissionService;
 import oauth2.service.role.SysRoleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -15,8 +17,13 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Oauth2App.class)
 public class PermissionTest {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+
     @Autowired
     private SysRoleService sysRoleService;
+
     @Autowired
     private SysPermissionService sysPermissionService;
 
@@ -30,13 +37,13 @@ public class PermissionTest {
         //是否存在
         sysPermission.setAvailable(true);
         //权限管理名称
-        sysPermission.setName("用户信息查看");
+        sysPermission.setName("显示用户");
         //menu
         sysPermission.setResourceType("menu");
         //权限
-        sysPermission.setPermission("goods:view");
+        sysPermission.setPermission("sys:user:show");
         //设置资源路径
-        sysPermission.setUrl("user/goodsList");
+        sysPermission.setUrl("userList");
         //
         sysPermission.setParent(null);
         sysPermissionService.saveSysPermission(sysPermission);
@@ -53,39 +60,50 @@ public class PermissionTest {
         //是否存在
         sysPermission1.setAvailable(true);
         //权限管理名称
-        sysPermission1.setName("用户信息修改");
+        sysPermission1.setName("添加用户");
         //menu
         sysPermission1.setResourceType("menu");
         //权限
-        sysPermission1.setPermission("goods:update");
+        sysPermission1.setPermission("sys:user:add");
         //设置资源路径
-        sysPermission1.setUrl("user/update");
-        //
-        sysPermission1.setParent(sysPermission);
+        sysPermission1.setUrl("/userAdd");
         ////
 
         SysPermission sysPermission2 = new SysPermission();
         //是否存在
         sysPermission2.setAvailable(true);
         //权限管理名称
-        sysPermission2.setName("用户信息删除");
+        sysPermission2.setName("删除用户");
         //menu
         sysPermission2.setResourceType("menu");
         //权限
-        sysPermission2.setPermission("goods:delete");
+        sysPermission2.setPermission("sys:user:delete");
         //设置资源路径
-        sysPermission2.setUrl("user/delete");
+        sysPermission2.setUrl("/userDelete");
+        //
+        SysPermission sysPermission3 = new SysPermission();
+        //是否存在
+        sysPermission3.setAvailable(true);
+        //权限管理名称
+        sysPermission3.setName("修改用户");
+        //menu
+        sysPermission3.setResourceType("menu");
+        //权限
+        sysPermission3.setPermission("sys:user:update");
+        //设置资源路径
+        sysPermission3.setUrl("/userMod");
         //
         sysPermission1.setParent(sysPermission);
         sysPermission2.setParent(sysPermission);
+        sysPermission3.setParent(sysPermission);
 
         sysPermissionList.add(sysPermission1);
         sysPermissionList.add(sysPermission2);
+        sysPermissionList.add(sysPermission3);
         //sub
         sysPermission.setSysPermissionList(sysPermissionList);
         //
         sysPermissionService.saveSysPermission(sysPermission);
-
     }
 
     /**
@@ -95,12 +113,23 @@ public class PermissionTest {
     @Test
     public void modPermissionRole() {
         //
-        SysRole sysRole = sysRoleService.findRoleById(2L);
+        SysRole sysRole = sysRoleService.findRoleByRoleName("ROLE_ADMIN");
         System.out.println("" + sysRole.toString());
-        SysPermission sysPermission = sysPermissionService.findById(7L);
+        SysPermission sysPermission = sysPermissionService.findSysPermissionByPermission("sys:user:show");
         //
         List<SysRole> sysRoleList = new ArrayList<>();
         sysRoleList.add(sysRole);
+        //先请父类权限的角色
+        sysPermission.getSysRoleList().clear();
+        //添加权限子集
+        List<SysPermission> subPermissions = sysPermission.getSysPermissionList();
+        for (SysPermission subPermission : subPermissions) {
+            System.out.println("");
+            logger.info("permission =>{}", subPermission.getPermission());
+            //子权限添加角色
+            subPermission.setSysRoleList(sysRoleList);
+        }
+        //重新设置角色
         sysPermission.setSysRoleList(sysRoleList);
         sysPermissionService.saveSysPermission(sysPermission);
     }

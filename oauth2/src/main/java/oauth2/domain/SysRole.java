@@ -1,12 +1,13 @@
 package oauth2.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import oauth2.domain.base.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class SysRole {
+public class SysRole extends BaseEntity{
 
     @Id
     @GeneratedValue

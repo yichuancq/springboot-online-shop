@@ -30,6 +30,7 @@
             <th>ID</th>
             <th>名称</th>
             <th>描述</th>
+            <th>createTime</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -38,6 +39,7 @@
             <td th:text="${sysRoleList.id}"/>
             <td th:text="${sysRoleList.role}"/>
             <td th:text="${sysRoleList.description}"/>
+            <td th:text="${sysRoleList.createTime}"/>
             <td>
                 <a th:href="@{modRole(roleId=${sysRoleList.id})}">修改</a>
                 <a th:href="@{deleteRole(roleId=${sysRoleList.id})}">删除</a>
