@@ -38,7 +38,9 @@ public class UserTests {
     public void saveUser() {
         UserInfo userInfo = new UserInfo();
         userInfo.setUsername("admin");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         userInfo.setPassword("123456");
+        userInfo.setPassword(encoder.encode(userInfo.getPassword().trim()));
         userInfo.setNickname("admin");
         Byte state = 1;
         userInfo.setState(state);
