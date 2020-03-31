@@ -1,26 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>userList</title>
     <script src="../layui/layui.js"></script>
     <link rel="stylesheet" href="../layui/css/layui.css">
-
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-group demoTable" align="left">
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">添加用户</button>
+        <button class="btn btn-default" data-toggle="modal" data-target="#myModal">添加用户</button>
     </div>
 </script>
 <div>
     <br/>
     <table style="width:80%" class="layui-hide" id="demo" lay-filter="demo"></table>
 </div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="form" action="#" th:action="@{/userAdd}" method="post" style="width:400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h5 class="modal-title" id="myModalLabel" align="center">
+                        添加用户
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" align="left">
+                        <label class="control-label">用户姓名</label>
+                        <input class="form-control" type="text" name="username" placeholder="输入用户姓名"/>
+                    </div>
+                    <div class="form-group" align="left">
+                        <label class="control-label">用户昵称</label>
+                        <input class="form-control" type="text" name="nickname" placeholder="输入用户昵称"/>
+                    </div>
+                    <div class="form-group" align="left">
+                        <label class="control-label">用户密码</label>
+                        <input class="form-control" type="password" name="password" placeholder="输入用户密码"/>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        关闭
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        保存
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal -->
+</div>
 </body>
 <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text" id="editWind">
+    <h3>edit me</h3>
 </script>
 <script>
 layui.use('table', function(){
@@ -40,15 +86,26 @@ layui.use('table', function(){
         layer.close(index);
       });
     } else if(obj.event === 'edit'){
-      layer.alert('编辑行：<br>'+ JSON.stringify(data))
+      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+      console.log("userName:"+data.username);
+      console.log("nickname:"+data.nickname);
+      console.log("password:"+data.password);
+      openEdit();
+
     }
   });
+ function openEdit(){
+
+ }
 
   $('.demoTable .layui-btn').on('click', function(){
     var type = $(this).data('type');
     active[type] ? active[type].call(this) : '';
   });
 });
+
+
+
 </script>
 <script>
     layui.use(['table', 'form'], function () {
@@ -69,7 +126,7 @@ layui.use('table', function(){
                     , {field: 'nickname', title: 'nickname'}
                     , {field: 'password', title: 'password'}
                     , {field: 'createTime', title: '添加时间', templet: '#createTime'}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:250}
                 ]
             ]
             , id: 'testReload'
@@ -98,6 +155,9 @@ layui.use('table', function(){
             });
         });
     });
+
+
+
 </script>
 </html>
 </html>

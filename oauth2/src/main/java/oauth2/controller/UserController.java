@@ -20,8 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
 
 @Api(value = "userController")
 @Controller
@@ -70,14 +68,12 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "userMod", notes = "userMod")
-    @GetMapping("/userMod")
+    @PostMapping("/userMod")
     @PostAuthorize("hasRole('ROLE_ADMIN') and hasAuthority('ROLE_ADMIN')")
     public ModelAndView userMod(UserInfo userInfoInput, HttpServletRequest request, HttpServletResponse response) {
         logger.info("用户修改");
         ModelAndView mav = new ModelAndView();
-        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        request.setAttribute("userInfo", userInfo);
-        logger.info("userInfo:{}", userInfo.toString());
+
         mav.setViewName("userList");
         //mav.setViewName("userMod");
         return mav;
@@ -85,12 +81,11 @@ public class UserController {
 
     @GetMapping("/userData")
     @ResponseBody
-    public ResponseEntity userData(Map<String, Object> model, int page, int limit, String driverType)
+    public ResponseEntity userData(UserInfo userInfo, int page, int limit)
             throws Exception {
+        logger.info("page{},limit{}",page,limit);
         logger.info("userData");
-        List<UserInfo> userInfoList = userApplication.findAll();
-        //
-        ResultDTO resultDTO = new ResultDTO<>(0, "ok", userInfoList.size(), userInfoList);
+        ResultDTO resultDTO = userApplication.findByPage(userInfo, page, limit);
         return ResponseEntity.ok(resultDTO);
     }
 
@@ -114,9 +109,14 @@ public class UserController {
 //        return mav;
 //    }
     @GetMapping("/userList")
-//    @PostAuthorize("hasRole('ROLE_ADMIN')")
     public String userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("userList");
         return "userList";
+    }
+
+    @GetMapping("/openUserEdit")
+    public String openUserEdit() throws Exception {
+        logger.info("openUserEdit");
+        return "userMod";
     }
 }

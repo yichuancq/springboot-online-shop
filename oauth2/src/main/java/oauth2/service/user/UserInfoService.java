@@ -2,6 +2,7 @@ package oauth2.service.user;
 
 
 import oauth2.domain.UserInfo;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,7 +17,6 @@ public interface UserInfoService {
      * @return
      */
     UserInfo findUserByName(String username);
-
     /**
      * save
      *
@@ -27,9 +27,14 @@ public interface UserInfoService {
     List<UserInfo> findAll();
 
     /**
-     *
      * @param id
      */
     void deleteUserById(Long id);
+
+    /**
+     * @param
+     * @return
+     */
+    Page<UserInfo> findAllByPage(UserInfo userInfo, int pageNumber, int pageSize);
 
 }

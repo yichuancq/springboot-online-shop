@@ -2,7 +2,9 @@ package oauth2.application;
 
 import oauth2.domain.UserInfo;
 import oauth2.service.user.UserInfoService;
+import oauth2.vo.ResultDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -36,8 +38,20 @@ public class UserApplication {
     }
 
 
-    public void deleteUserById(Long userId){
+    public void deleteUserById(Long userId) {
         assert (userId != null);
         userInfoService.deleteUserById(userId);
+    }
+
+    /**
+     * @param userInfo
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    public ResultDTO findByPage(UserInfo userInfo, int pageNumber, int pageSize) {
+        Page<UserInfo> userInfoPage = userInfoService.findAllByPage(userInfo, pageNumber, pageSize);
+        return new ResultDTO(0, "ok", Math.toIntExact(userInfoPage.getTotalElements()),
+                userInfoPage.getContent());
     }
 }
