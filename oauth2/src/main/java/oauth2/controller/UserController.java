@@ -4,19 +4,24 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import oauth2.application.UserApplication;
 import oauth2.domain.UserInfo;
+import oauth2.vo.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 @Api(value = "userController")
 @Controller
@@ -67,14 +72,26 @@ public class UserController {
     @ApiOperation(value = "userMod", notes = "userMod")
     @GetMapping("/userMod")
     @PostAuthorize("hasRole('ROLE_ADMIN') and hasAuthority('ROLE_ADMIN')")
-    public ModelAndView userMod(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView userMod(UserInfo userInfoInput, HttpServletRequest request, HttpServletResponse response) {
         logger.info("用户修改");
         ModelAndView mav = new ModelAndView();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         request.setAttribute("userInfo", userInfo);
         logger.info("userInfo:{}", userInfo.toString());
-        mav.setViewName("userMod");
+        mav.setViewName("userList");
+        //mav.setViewName("userMod");
         return mav;
+    }
+
+    @GetMapping("/userData")
+    @ResponseBody
+    public ResponseEntity userData(Map<String, Object> model, int page, int limit, String driverType)
+            throws Exception {
+        logger.info("userData");
+        List<UserInfo> userInfoList = userApplication.findAll();
+        //
+        ResultDTO resultDTO = new ResultDTO<>(0, "ok", userInfoList.size(), userInfoList);
+        return ResponseEntity.ok(resultDTO);
     }
 
     /**
@@ -84,16 +101,22 @@ public class UserController {
      * @param response
      * @return
      */
+//    @GetMapping("/userList")
+//    @PostAuthorize("hasRole('ROLE_ADMIN')")
+//    public ModelAndView userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        logger.info("userList");
+//        //获取登录的用户名
+//        ModelAndView mav = new ModelAndView();
+//        //UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//       // request.setAttribute("userInfo", userInfo);
+//        request.setAttribute("userInfoList", userApplication.findAll());
+//        mav.setViewName("userList");
+//        return mav;
+//    }
     @GetMapping("/userList")
-    @PostAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//    @PostAuthorize("hasRole('ROLE_ADMIN')")
+    public String userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("userList");
-        //获取登录的用户名
-        ModelAndView mav = new ModelAndView();
-        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        request.setAttribute("userInfo", userInfo);
-        request.setAttribute("userInfoList", userApplication.findAll());
-        mav.setViewName("userList");
-        return mav;
+        return "userList";
     }
 }

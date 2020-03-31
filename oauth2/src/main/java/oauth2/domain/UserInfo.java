@@ -1,5 +1,6 @@
 package oauth2.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import oauth2.domain.base.BaseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +23,7 @@ public class UserInfo extends BaseEntity implements UserDetails {
     private String password;// 密码
     private byte state;//用户状态,0:创建未认证（比如没有激活，没有输入验证码等等）--等待验证的用户 , 1:正常状态,2：用户被锁定.
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<SysRole> sysRoleList;// 用户权限集合
 
@@ -34,6 +36,7 @@ public class UserInfo extends BaseEntity implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         List<SysRole> roles = this.getSysRoleList();

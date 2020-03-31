@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,9 +7,26 @@
 </head>
 <body>
 <div align="center">
-    <h1>update用户</h1>
+    <h1>修改用户</h1>
     <br>
-    <a href="/login">login</a>
+    <form th:action="userMod" th:method="post">
+        <table>
+            <tr>
+                <th>用户名</th>
+                <td><input th:type="text" th:name="username" th:value="${userInfo == null? '' : userInfo.name}"
+                           th:title="请输入用户名"/></td>
+            </tr>
+            <tr>
+                <th>用户昵称</th>
+                <td><input th:type="text" th:name="nickname" th:value="${userInfo == null? '' : userInfo.nickname}"
+                           th:title="请输入用户名"/></td>
+            </tr>
+            <tr>
+                <td th:colspan="2"><input th:type="submit" th:value="提交"/></td>
+            </tr>
+        </table>
+        <input th:type="hidden" th:name="id" th:value="${userInfo == null? null : userInfo.id}"/>
+    </form>
 </div>
 </body>
 </html>
