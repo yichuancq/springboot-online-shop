@@ -14,10 +14,9 @@
 <div align="center" class="table-responsive">
     <h1>show users</h1>
     <!-- userInfo-->
-    欢迎你:<label th:text="${userInfo.username}"></label>
-    &nbsp;&nbsp;&nbsp;<a href="/welcome">back</a>
+<!--    欢迎你:<label th:text="${userInfo.username}"></label>-->
+<!--    &nbsp;&nbsp;&nbsp;<a href="/welcome">back</a>-->
     <br/>
-
     <br/>
     <!--循环打印角色信息-->
     <table class="table table-striped" style="width:80%">
@@ -37,6 +36,7 @@
         </tr>
         </thead>
         <tr th:each="userInfoList:${userInfoList}">
+            <td><input type="checkbox"></td>
             <td th:text="${userInfoList.id}"/>
             <td th:text="${userInfoList.username}"/>
             <td th:text="${userInfoList.nickname}"/>
