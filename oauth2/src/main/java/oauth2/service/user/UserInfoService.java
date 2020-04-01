@@ -25,6 +25,9 @@ public interface UserInfoService {
      */
     void saveUser(UserInfo userInfo);
 
+    /**
+     * @return
+     */
     List<UserInfo> findAll();
 
     /**
@@ -32,6 +35,10 @@ public interface UserInfoService {
      */
     void deleteUserById(Long id);
 
+    /**
+     * @param id
+     * @return
+     */
     UserInfo findUserById(Long id);
 
     /**

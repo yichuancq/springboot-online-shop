@@ -18,6 +18,8 @@ public class UserInfo extends BaseEntity implements UserDetails {
     @GeneratedValue
     @Column(name = "role_id")
     private Long id;// 用户id
+    //用户名称不能重复
+    @Column(unique = true)
     private String username;// 用户名
     private String nickname;//（昵称或者真实姓名，不同系统不同定义）
     private String password;// 密码

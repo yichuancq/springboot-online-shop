@@ -35,7 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo findUserByName(String username) {
         assert (!username.isEmpty());
-        return userInfoRepository.findByUsername(username);
+        return userInfoRepository.findTop1ByUsername(username);
     }
 
     /**

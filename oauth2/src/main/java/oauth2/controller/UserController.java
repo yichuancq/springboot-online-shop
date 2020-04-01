@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,15 +33,14 @@ public class UserController {
     @ApiOperation(value = "userAdd", notes = "userAdd")
     @PostMapping("/userAdd")
     @PreAuthorize("hasRole('ROLE_ADMIN') and hasPermission('/userAdd','sys:user:add')")
-    public ModelAndView userAdd(UserInfo userInfo, HttpServletRequest request) {
-        logger.info("用户添加");
-        ModelAndView mav = new ModelAndView();
+    @ResponseBody
+    public ResponseEntity userAdd(UserInfo userInfo, HttpServletRequest request) {
         userApplication.saveUser(userInfo);
-        UserInfo userCash = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        request.setAttribute("userInfo", userCash);
-        request.setAttribute("userInfoList", userApplication.findAll());
-        mav.setViewName("userList");
-        return mav;
+        ModelAndView mav = new ModelAndView();
+        logger.info("userData:{}", userInfo);
+        logger.info("用户添加");
+        mav.addObject("msg", "OK");
+        return ResponseEntity.ok(mav);
     }
 
     /**
@@ -51,7 +49,7 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "userDelete", notes = "userDelete")
-    @GetMapping("/userDelete")
+    @PostMapping("/userDelete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseBody
     public void userDelete(Long userId) {

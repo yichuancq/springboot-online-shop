@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>userList</title>
@@ -10,66 +11,21 @@
 </head>
 <body>
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-group demoTable" align="left">
-        <button class="btn btn-default" data-toggle="modal" data-target="#myModal">添加用户</button>
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm"  lay-event="addUser">添加用户</button>
+        <button class="layui-btn layui-btn-sm"  lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
     </div>
 </script>
 <div>
     <br/>
     <table style="width:80%" class="layui-hide" id="demo" lay-filter="demo"></table>
 </div>
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form class="form" action="/userAdd" method="post" style="width:400px">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h5 class="modal-title" id="myModalLabel" align="center">
-                        添加用户
-                    </h5>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group" align="left">
-                        <label class="control-label">用户姓名</label>
-                        <input class="form-control" type="text" name="username" placeholder="输入用户姓名"/>
-                    </div>
-                    <div class="form-group" align="left">
-                        <label class="control-label">用户昵称</label>
-                        <input class="form-control" type="text" name="nickname" placeholder="输入用户昵称"/>
-                    </div>
-                    <div class="form-group" align="left">
-                        <label class="control-label">用户密码</label>
-                        <input class="form-control" type="password" name="password" placeholder="输入用户密码"/>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        关闭
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        保存
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </form>
-    </div><!-- /.modal -->
-</div>
 </body>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
-<script type="text/html" id="editWind">
-    <div>
-        <form>
-            <input id="name" value="hello"/>
-        </form>
-    </div>
 </script>
 <script>
 layui.use('table', function(){
@@ -78,24 +34,90 @@ layui.use('table', function(){
   table.on('checkbox(demo)', function(obj){
     console.log(obj)
   });
-  //监听工具条
+  //addUser
+  function addUser() {
+     var html='';
+      html+='<label class="control-label">用户姓名</label>';
+      html+='<input class="form-control" type="text" id="username" value="" placeholder="输入用户姓名"/>';
+      html+='<label class="control-label">用户昵称</label>';
+      html+='<input class="form-control" type="text" id="nickname" value="" placeholder="输入用户昵称"/>';
+      html+='<label class="control-label">用户密码</label>';
+      html+='<input class="form-control" type="password" id="password" value="" placeholder="输入新密码"/>';
+      html+='';
+      html+='<br>';
+    layer.alert(html, {
+        skin: 'layui-layer-molv' //样式类名  自定义样式
+       ,closeBtn: 1    // 是否显示关闭按钮
+       ,anim: 1 //动画类型
+       ,btn: ['确定','取消'] //按钮
+       ,yes:function(){
+            var username=$("#username").val();
+            var nickname=$("#nickname").val();
+            var password=$("#password").val();
+            console.log("username:"+username);
+            console.log("nickname:"+nickname);
+            return $.ajax({
+                url:'/userAdd',
+                type:'post',
+                dataType:'json',
+                data:{username:username,nickname:nickname,password:password},
+                success:function(msg){
+                    var index = parent.layer.getFrameIndex(window.name);
+	               //parent.layer.closeAll(index);
+                   layer.close(index);
+                   //重新刷新本页
+                   window.location.reload();
+                }
+            });
+        }
+       ,btn2:function(){
+            layer.msg('取消操作');
+       }
+    });
+  }
+
+   //头工具栏事件
+  table.on('toolbar(demo)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id);
+    var data = obj.data;
+    switch(obj.event){
+    //add user
+      case 'addUser':
+        addUser();
+        break;
+      case 'getCheckData':
+        var data = checkStatus.data;
+        layer.alert(JSON.stringify(data));
+      break;
+      case 'getCheckLength':
+        var data = checkStatus.data;
+        layer.msg('选中了：'+ data.length + ' 个');
+      break;
+      case 'isAll':
+        layer.msg(checkStatus.isAll ? '全选': '未全选');
+      break;
+    };
+  });
   table.on('tool(demo)', function(obj){
     var data = obj.data;
+
     if(obj.event === 'detail'){
       layer.msg('ID：'+ data.id + ' 的查看操作');
     } else if(obj.event === 'del'){
       layer.confirm('真的删除行么', function(index){
-        obj.del();
+         //obj.del();
         console.log("delete ID is:"+data.id);
         $.ajax({
-                url:'/userDelete?userId='+data.id,
-                type:'get',
+                url:'/userDelete',
+                type:'post',
+                 dataType:'json',
+                data:{userId:data.id},
                 success:function(msg){
                    //var index = parent.layer.getFrameIndex(window.name);
 	               //parent.layer.closeAll(index);
                    layer.close(index);
                    //重新刷新本页
-                   window.location.reload();
+                   window.parent.location.reload();
                 }
             });
         //重新刷新本页
@@ -146,13 +168,9 @@ layui.use('table', function(){
        }
     });
   }
-  //编辑弹窗
-  //
-  $('.demoTable .layui-btn').on('click', function(){
-    var type = $(this).data('type');
-    active[type] ? active[type].call(this) : '';
-  });
+
 });
+
 
 </script>
 <script>
@@ -187,6 +205,8 @@ layui.use('table', function(){
 
         });
 
+
+
         form.on('select(search_type)', function (data) {
             if ($("#search_type")[0].value == '') {
                 layer.msg('请选择数据源类型')
@@ -202,6 +222,7 @@ layui.use('table', function(){
                 }
             });
         });
+
     });
 
 </script>
