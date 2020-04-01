@@ -55,4 +55,30 @@ public class PermissionApplication {
         assert (permissionId != null);
         sysPermissionService.deletePermissionById(permissionId);
     }
+
+    /**
+     * @param sysPermissionInput
+     * @throws Exception
+     */
+    public void PermissionMod(SysPermission sysPermissionInput) throws Exception {
+        if (sysPermissionInput == null || sysPermissionInput.getId() == null) {
+            //用户为空或者ID为空
+            throw new Exception("用户为空或者ID为空");
+        }
+        if (StringUtils.isEmpty(sysPermissionInput.getName())) {
+            logger.info("权限名称为空");
+            throw new Exception("权限名称为空");
+        }
+        if (StringUtils.isEmpty(sysPermissionInput.getPermission())) {
+            logger.info("权限为空");
+            throw new Exception("权限为空");
+        }
+        SysPermission sysPermissionDb = sysPermissionService.findById(sysPermissionInput.getId());
+        if (sysPermissionInput != null) {
+            sysPermissionDb.setName(sysPermissionInput.getName());
+            sysPermissionDb.setPermission(sysPermissionInput.getPermission());
+            sysPermissionDb.setUrl(sysPermissionInput.getUrl());
+            sysPermissionService.saveSysPermission(sysPermissionDb);
+        }
+    }
 }

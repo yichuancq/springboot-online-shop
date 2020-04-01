@@ -13,8 +13,6 @@
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm"  lay-event="addUserPermission">添加权限</button>
-<!--        <button class="layui-btn layui-btn-sm"  lay-event="getCheckData">获取选中行数据</button>-->
-<!--        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
     </div>
 </script>
 <div>
@@ -125,30 +123,29 @@ layui.use('table', function(){
   //取消提现
   function back(data) {
      var html='';
-      html+='<label class="control-label">用户姓名</label>';
-      html+='<input class="form-control" type="text" id="username" value="'+data.username+'" placeholder=""/>';
-      html+='<label class="control-label">用户昵称</label>';
-      html+='<input class="form-control" type="text" id="nickname" value="'+data.nickname+'" placeholder=""/>';
-      html+='<label class="control-label">用户密码</label>';
-      html+='<input class="form-control" type="password" id="password" value="" placeholder="输入新密码"/>';
+      html+='<label class="control-label">权限名称</label>';
+      html+='<input class="form-control" type="text" id="name" value="'+data.name+'" placeholder=""/>';
+      html+='<label class="control-label">权限</label>';
+      html+='<input class="form-control" type="text" id="permission" value="'+data.permission+'" placeholder=""/>';
+      html+='<label class="control-label">URL</label>';
+      html+='<input class="form-control" type="text" id="url" value="'+data.url+'"placeholder=""/>';
       html+='';
       html+='<br>';
     layer.alert(html, {
         skin: 'layui-layer-molv' //样式类名  自定义样式
-       ,closeBtn: 1    // 是否显示关闭按钮
+       ,closeBtn: 1  // 是否显示关闭按钮
        ,anim: 1 //动画类型
        ,btn: ['确定','取消'] //按钮
        ,yes:function(){
-            var newName=$("#username").val();
-            var newNickname=$("#nickname").val();
-            var newPassword=$("#password").val();
-            console.log("newName:"+newName);
-            console.log("newNickname:"+newNickname);
+            var name=$("#name").val();
+            var permission=$("#permission").val();
+            var url=$("#url").val();
+            //提交修改数据
             return $.ajax({
-                url:'/userMod',
+                url:'/permissionMod',
                 type:'post',
                 dataType:'json',
-                data:{id:data.id,username:newName,nickname:newNickname,password:newPassword},
+                data:{id:data.id,permission:permission,name:name,url:url},
                 success:function(msg){
                    var index = parent.layer.getFrameIndex(window.name);
 	               parent.layer.closeAll(index);
@@ -163,9 +160,7 @@ layui.use('table', function(){
        }
     });
   }
-
 });
-
 
 </script>
 <script>

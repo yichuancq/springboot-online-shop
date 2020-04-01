@@ -136,6 +136,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //permissionDelete
                 .antMatchers("/permissionDelete/**", "/permissionDelete")//
                 .permitAll()
+                //permissionMod
+                .antMatchers("/permissionMod/**", "/permissionMod")//
+                .permitAll()
                 //openUserEdit
                 // swagger start
                 .antMatchers("/swagger-ui.html").permitAll()

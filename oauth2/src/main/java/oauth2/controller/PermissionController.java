@@ -52,6 +52,31 @@ public class PermissionController {
         }
     }
 
+    /**
+     * @return
+     */
+    @ApiOperation(value = "permissionMod", notes = "permissionMod")
+    @PostMapping("/permissionMod")
+    public ResponseEntity permissionMod(SysPermission sysPermissionInput) {
+        try {
+            assert (sysPermissionInput != null);
+            assert (!StringUtils.isEmpty(sysPermissionInput.getPermission()));
+            assert (!StringUtils.isEmpty(sysPermissionInput.getUrl()));
+            assert (!StringUtils.isEmpty(sysPermissionInput.getName()));
+            logger.info("permission修改");
+            ModelAndView mav = new ModelAndView();
+            logger.info("sysPermissionInput:{}", sysPermissionInput);
+            mav.addObject("msg", "OK");
+            permissionApplication.PermissionMod(sysPermissionInput);
+            return ResponseEntity.ok(mav);
+        } catch (Exception e) {
+            logger.error("error:{}", e.getMessage());
+            return ResponseEntity.ok(e.getMessage());
+        }
+
+    }
+
+
     @GetMapping("/permissionData")
     @ResponseBody
     public ResponseEntity roleData(SysPermission sysPermission, int page, int limit)
