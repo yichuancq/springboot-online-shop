@@ -52,14 +52,11 @@ public class UserController {
      */
     @ApiOperation(value = "userDelete", notes = "userDelete")
     @GetMapping("/userDelete")
-    @PostAuthorize("hasRole('ROLE_ADMIN')")
-    public String userDelete(Long userId, HttpServletRequest request) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseBody
+    public void userDelete(Long userId) {
         userApplication.deleteUserById(userId);
-        UserInfo userCash = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        request.setAttribute("userInfo", userCash);
         logger.info("用户删除");
-        request.setAttribute("userInfoList", userApplication.findAll());
-        return "userList";
     }
 
     /**

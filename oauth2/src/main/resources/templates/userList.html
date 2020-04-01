@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>userList</title>
@@ -22,7 +21,7 @@
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="form" action="#" th:action="@{/userAdd}" method="post" style="width:400px">
+        <form class="form" action="/userAdd" method="post" style="width:400px">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -87,24 +86,22 @@ layui.use('table', function(){
     } else if(obj.event === 'del'){
       layer.confirm('真的删除行么', function(index){
         obj.del();
-        layer.close(index);
+        console.log("delete ID is:"+data.id);
+        $.ajax({
+                url:'/userDelete?userId='+data.id,
+                type:'get',
+                success:function(msg){
+                   //var index = parent.layer.getFrameIndex(window.name);
+	               //parent.layer.closeAll(index);
+                   layer.close(index);
+                   //重新刷新本页
+                   window.location.reload();
+                }
+            });
+        //重新刷新本页
+        window.location.reload();
       });
     } else if(obj.event === 'edit'){
-      var html='';
-      html+='<label class="control-label">用户姓名</label>';
-      html+='<input class="form-control" type="text" name="username" value="'+data.username+'" placeholder=""/>';
-      html+='<label class="control-label">用户昵称</label>';
-      html+='<input class="form-control" type="text" name="nickname" value="'+data.nickname+'" placeholder=""/>';
-      html+='<label class="control-label">用户密码</label>';
-      html+='<input class="form-control" type="password" name="password" placeholder="输入新密码"/>';
-
-      html+='<br>';
-      //layer.alert(html)
-      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
-      console.log("userName:"+data.username);
-      console.log("nickname:"+data.nickname);
-      console.log("password:"+data.password);
-      //openEdit(data);
       back(data);
     }
   });
@@ -157,12 +154,6 @@ layui.use('table', function(){
   });
 });
 
-
-
-
-
-
-
 </script>
 <script>
     layui.use(['table', 'form'], function () {
@@ -212,10 +203,6 @@ layui.use('table', function(){
             });
         });
     });
-
-
-
-
 
 </script>
 </html>
