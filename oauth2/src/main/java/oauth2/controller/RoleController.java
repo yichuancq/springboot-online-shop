@@ -5,23 +5,25 @@ import io.swagger.annotations.ApiOperation;
 import oauth2.application.RoleApplication;
 import oauth2.domain.SysRole;
 import oauth2.domain.UserInfo;
+import oauth2.vo.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Api(value = "roleController")
 @Controller
 public class RoleController {
     private Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private RoleApplication roleApplication;
 
@@ -30,33 +32,53 @@ public class RoleController {
      */
     @ApiOperation(value = "addRole", notes = "addRole")
     @PostMapping("/addRole")
-    private ModelAndView addRole(SysRole sysRole, HttpServletRequest request) {
+    @ResponseBody
+    public ResponseEntity addRole(SysRole sysRole) {
+        assert (sysRole != null);
         ModelAndView modelAndView = new ModelAndView();
-        logger.info("sysRole:{}", sysRole);
         roleApplication.addSysRole(sysRole);
-        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        request.setAttribute("userInfo", userInfo);
-        List<SysRole> sysRoleList = roleApplication.findAll();
-        request.setAttribute("sysRoleList", sysRoleList);
         modelAndView.setViewName("roleList");
-        return modelAndView;
+        ModelAndView mav = new ModelAndView();
+
+        mav.addObject("msg", "OK");
+        return ResponseEntity.ok(mav);
+    }
+
+    @GetMapping("/roleData")
+    @ResponseBody
+    @PostAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity roleData(SysRole sysRole, int page, int limit)
+            throws Exception {
+        logger.info("page{},limit{}", page, limit);
+        logger.info("roleData");
+        ResultDTO resultDTO = roleApplication.findByPage(sysRole, page, limit);
+        return ResponseEntity.ok(resultDTO);
+    }
+
+    /**
+     * @return
+     */
+    @ApiOperation(value = "roleMod", notes = "roleMod")
+    @PostMapping("/roleMod")
+    public ResponseEntity roleMod(SysRole sysRoleInput) {
+        assert (sysRoleInput.getId() != null);
+        logger.info("修改");
+        ModelAndView mav = new ModelAndView();
+        logger.info("sysRoleInput:{}", sysRoleInput);
+        mav.addObject("msg", "OK");
+        roleApplication.roleMod(sysRoleInput);
+        return ResponseEntity.ok(mav);
     }
 
     /**
      * @param roleId
-     * @param request
      * @return
      */
-    @GetMapping("/deleteRole")
-    public String deleteRole(Long roleId, HttpServletRequest request) {
+    @PostMapping("/deleteRole")
+    @ResponseBody
+    public void deleteRole(Long roleId) {
         logger.info("roleId:{}", roleId);
         roleApplication.deleteRoleById(roleId);
-        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        request.setAttribute("userInfo", userInfo);
-        List<SysRole> sysRoleList = roleApplication.findAll();
-        request.setAttribute("sysRoleList", sysRoleList);
-        return "roleList";
     }
 
     /**
@@ -67,10 +89,6 @@ public class RoleController {
     public String toRoleListPage(HttpServletRequest request) {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         request.setAttribute("userInfo", userInfo);
-        List<SysRole> sysRoleList = roleApplication.findAll();
-        request.setAttribute("sysRoleList", sysRoleList);
         return "roleList";
     }
-
-
 }

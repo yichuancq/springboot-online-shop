@@ -3,8 +3,15 @@ package oauth2.service.role;
 import oauth2.domain.SysRole;
 import oauth2.repository.role.SysRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,8 +56,19 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public List<SysRole> findAll() {
-        return sysRoleRepository.findAll();
+    public Page<SysRole> findAllByPage(SysRole sysRole, int pageNumber, int pageSize) {
+        Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
+        Specification<SysRole> specification = (Specification<SysRole>) (root, query, cb) -> {
+            List<Predicate> predicateList = new ArrayList<Predicate>();
+            //姓名
+            if (sysRole != null && !StringUtils.isEmpty(sysRole.getRole())) {
+                Predicate predicate = cb.equal(root.get("role"), sysRole.getRole());
+                predicateList.add(predicate);
+            }
+            return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
+        };
+        Page<SysRole> page = sysRoleRepository.findAll(specification, pageable);
+        return page;
     }
 
 }

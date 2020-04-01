@@ -107,20 +107,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/loginOutSuccess/**", "/loginOutSuccess")//不拦截登录相关方法
                 .permitAll()
                 ///addRole
-                .antMatchers("/addRole/**", "/addRole")//不拦截登录相关方法
+                .antMatchers("/addRole/**", "/addRole")//
                 .permitAll()
                 //roleList
-                .antMatchers("/roleList/**", "/toRoleListPage")//不拦截登录相关方法
+                .antMatchers("/roleList/**", "/toRoleListPage")//
                 .permitAll()
-                .antMatchers("/permissionList/**", "/toPermissionListPage")//不拦截登录相关方法
+                .antMatchers("/permissionList/**", "/toPermissionListPage")//
                 .permitAll()
-                .antMatchers("/deleteRole/**", "/deleteRole")//不拦截登录相关方法
+                .antMatchers("/deleteRole/**", "/deleteRole")//
                 .permitAll()
-                .antMatchers("/userMod/**", "/userMod")//不拦截登录相关方法
+                .antMatchers("/userMod/**", "/userMod")//
                 .permitAll()
-                .antMatchers("/userData/**", "/userData")//不拦截登录相关方法
+                .antMatchers("/userData/**", "/userData")//
                 .permitAll()
-                .antMatchers("/userMod/**", "/userMod")//不拦截登录相关方法
+                .antMatchers("/roleData/**", "/roleData")//
+                .permitAll()
+                .antMatchers("/userMod/**", "/userMod")//
+                .permitAll()
+                //roleMod
+                .antMatchers("/roleMod/**", "/roleMod")//
                 .permitAll()
                 //openUserEdit
                 // swagger start

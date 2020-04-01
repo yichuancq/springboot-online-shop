@@ -2,8 +2,7 @@ package oauth2.service.role;
 
 
 import oauth2.domain.SysRole;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  * 角色
@@ -33,5 +32,6 @@ public interface SysRoleService {
     /**
      * @return
      */
-    List<SysRole> findAll();
+
+    Page<SysRole> findAllByPage(SysRole sysRole, int pageNumber, int pageSize);
 }
