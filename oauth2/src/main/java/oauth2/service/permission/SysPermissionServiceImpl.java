@@ -4,9 +4,15 @@ package oauth2.service.permission;
 import oauth2.domain.SysPermission;
 import oauth2.repository.permission.SysPermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,5 +69,32 @@ public class SysPermissionServiceImpl implements SysPermissionService {
         List<SysPermission> sysPermissionList = null;
         sysPermissionList = sysPermissionRepository.findAllById(ids);
         return sysPermissionList;
+    }
+
+    /**
+     * @param sysPermission
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Page<SysPermission> findAllByPage(SysPermission sysPermission, int pageNumber, int pageSize) {
+        Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
+        Specification<SysPermission> specification = (Specification<SysPermission>) (root, query, cb) -> {
+            List<Predicate> predicateList = new ArrayList<Predicate>();
+            //姓名
+            if (sysPermission != null && !StringUtils.isEmpty(sysPermission.getPermission())) {
+                Predicate predicate = cb.equal(root.get("permission"), sysPermission.getPermission());
+                predicateList.add(predicate);
+            }
+            return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
+        };
+        Page<SysPermission> page = sysPermissionRepository.findAll(specification, pageable);
+        return page;
+    }
+
+    @Override
+    public void deletePermissionById(Long permissionId) {
+        sysPermissionRepository.deleteById(permissionId);
     }
 }

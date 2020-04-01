@@ -1,113 +1,223 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="data:;base64,=">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>userList</title>
+    <script src="../layui/layui.js"></script>
+    <link rel="stylesheet" href="../layui/css/layui.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
-
 <body>
-
-<div align="center" class="table-responsive">
-    <h1>show permission</h1>
-    <!-- userInfo-->
-<!--    欢迎你:<label th:text="${userInfo.username}"></label>-->
-<!--    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/welcome">back</a>-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm"  lay-event="addUserPermission">添加权限</button>
+<!--        <button class="layui-btn layui-btn-sm"  lay-event="getCheckData">获取选中行数据</button>-->
+<!--        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
+    </div>
+</script>
+<div>
     <br/>
-
-    <br/>
-    <!--循环打印角色信息-->
-    <table class="table table-striped" style="width:80%">
-        <div align="center">
-            <!-- 表示一个成功的或积极的动作 -->
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-                添加权限
-            </button>
-        </div>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>角色名称</th>
-            <th>描述</th>
-        </tr>
-        </thead>
-        <tr th:each="sysRoleList:${sysRoleList}" class="success">
-            <td th:text="${sysRoleList.id}"/>
-            <td th:text="${sysRoleList.role}"/>
-            <td th:text="${sysRoleList.description}"/>
-        </tr>
-    </table>
-    <br/>
-    <table class="table table-striped" style="width:80%">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>名称</th>
-            <th>权限</th>
-            <th>URL</th>
-            <th>createTime</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tr th:each="sysPermissionList:${sysPermissionList}">
-            <td th:text="${sysPermissionList.id}"/>
-            <td th:text="${sysPermissionList.name}"/>
-            <td th:text="${sysPermissionList.permission}"/>
-            <td th:text="${sysPermissionList.url}"/>
-            <td th:text="${sysPermissionList.createTime}"/>
-            <td>
-                <button type="button" class="btn btn-success">修改</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-success">删除</button>
-            </td>
-        </tr>
-    </table>
+    <table style="width:80%" class="layui-hide" id="demo" lay-filter="demo"></table>
 </div>
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form class="form" action="#" th:action="@{/addRole}" method="post" style="width:400px">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h5 class="modal-title" id="myModalLabel" align="center">
-                        添加角色
-                    </h5>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group" align="left">
-                        <label class="control-label">名称</label>
-                        <input class="form-control" type="text" name="role" placeholder="输入名称"/>
-                    </div>
-                    <div class="form-group" align="left">
-                        <label class="control-label">描述</label>
-                        <input class="form-control" type="text" name="description" placeholder="输入描述"/>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        关闭
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        保存
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </form>
-    </div><!-- /.modal -->
-</div>
+</body>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 <script>
-$(function() {
-    $("#myButton").click(function(){
-       window.location.href="/roleList";
+layui.use('table', function(){
+  var table = layui.table;
+  //监听表格复选框选择
+  table.on('checkbox(demo)', function(obj){
+    console.log(obj)
+  });
+  //addUserPermission
+  function addUserPermission() {
+     var html='';
+      html+='<label class="control-label">权限名称</label>';
+      html+='<input class="form-control" type="text" id="name" value="" placeholder="输入权限名称"/>';
+      html+='<label class="control-label">权限</label>';
+      html+='<input class="form-control" type="text" id="permission" value="" placeholder="输入权限"/>';
+      html+='<label class="control-label">url路径</label>';
+      html+='<input class="form-control" type="text" id="url" value="" placeholder="输入URL"/>';
+      html+='';
+      html+='<br>';
+    layer.alert(html, {
+        skin: 'layui-layer-molv' //样式类名  自定义样式
+       ,closeBtn: 1    // 是否显示关闭按钮
+       ,anim: 1 //动画类型
+       ,btn: ['确定','取消'] //按钮
+       ,yes:function(){
+            var name=$("#name").val();
+            var permission=$("#permission").val();
+            var url=$("#url").val();
+            console.log("name:"+name);
+            return $.ajax({
+                url:'/permissionAdd',
+                type:'post',
+                dataType:'json',
+                data:{name:name,permission:permission,url:url},
+                success:function(msg){
+                    var index = parent.layer.getFrameIndex(window.name);
+	               //parent.layer.closeAll(index);
+                   layer.close(index);
+                   //重新刷新本页
+                   window.location.reload();
+                },
+                error:function(msg){
+                  layer.alert(JSON.stringify(msg));
+                }
+            });
+        }
+       ,btn2:function(){
+            layer.msg('取消操作');
+       }
     });
+  }
+
+   //头工具栏事件
+  table.on('toolbar(demo)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id);
+    var data = obj.data;
+    switch(obj.event){
+    //add user
+      case 'addUserPermission':
+        addUserPermission();
+        break;
+      case 'getCheckData':
+        var data = checkStatus.data;
+        layer.alert(JSON.stringify(data));
+      break;
+    };
+  });
+  table.on('tool(demo)', function(obj){
+    var data = obj.data;
+
+    if(obj.event === 'detail'){
+      layer.msg('ID：'+ data.id + ' 的查看操作');
+    } else if(obj.event === 'del'){
+      layer.confirm('真的删除 id:'+data.id+'么 ', function(index){
+         //obj.del();
+        console.log("delete ID is:"+data.id);
+        $.ajax({
+                url:'/permissionDelete',
+                type:'post',
+                 dataType:'json',
+                data:{permissionId:data.id},
+                success:function(msg){
+                   //var index = parent.layer.getFrameIndex(window.name);
+	               //parent.layer.closeAll(index);
+                   layer.close(index);
+                   //重新刷新本页
+                   window.parent.location.reload();
+                }
+            });
+        //重新刷新本页
+        window.location.reload();
+      });
+    } else if(obj.event === 'edit'){
+      back(data);
+    }
+  });
+  //取消提现
+  function back(data) {
+     var html='';
+      html+='<label class="control-label">用户姓名</label>';
+      html+='<input class="form-control" type="text" id="username" value="'+data.username+'" placeholder=""/>';
+      html+='<label class="control-label">用户昵称</label>';
+      html+='<input class="form-control" type="text" id="nickname" value="'+data.nickname+'" placeholder=""/>';
+      html+='<label class="control-label">用户密码</label>';
+      html+='<input class="form-control" type="password" id="password" value="" placeholder="输入新密码"/>';
+      html+='';
+      html+='<br>';
+    layer.alert(html, {
+        skin: 'layui-layer-molv' //样式类名  自定义样式
+       ,closeBtn: 1    // 是否显示关闭按钮
+       ,anim: 1 //动画类型
+       ,btn: ['确定','取消'] //按钮
+       ,yes:function(){
+            var newName=$("#username").val();
+            var newNickname=$("#nickname").val();
+            var newPassword=$("#password").val();
+            console.log("newName:"+newName);
+            console.log("newNickname:"+newNickname);
+            return $.ajax({
+                url:'/userMod',
+                type:'post',
+                dataType:'json',
+                data:{id:data.id,username:newName,nickname:newNickname,password:newPassword},
+                success:function(msg){
+                   var index = parent.layer.getFrameIndex(window.name);
+	               parent.layer.closeAll(index);
+                   layer.close(index);
+                   //重新刷新本页
+                   window.location.reload();
+                }
+            });
+        }
+       ,btn2:function(){
+            layer.msg('取消操作');
+       }
+    });
+  }
+
 });
 
+
 </script>
-</body>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.$;
+        form.render('select');
+        table.render({
+            elem: '#demo'  //绑定table id
+            , url: '/permissionData'  //数据请求路径，
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            , cellMinWidth: 80
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'}
+                    , {field: 'id', title: 'ID'}
+                    , {field: 'name', title: '权限名称'}
+                    , {field: 'resourceType', title: '资源类型'}
+                    , {field: 'permission', title: '权限'}
+                    , {field: 'url', title: 'url路径'}
+                    , {field: 'createTime', title: '添加时间', templet: '#createTime'}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:250}
+                ]
+            ]
+            , id: 'testReload'
+            , page: true
+            , limit: 10   //默认十条数据一页
+            , limits: [10, 20, 30, 50]  //数据分页条
+            , done: function (res, curr, count) {
+                layer.msg(res.msg)
+            }
+
+        });
+        form.on('select(search_type)', function (data) {
+            if ($("#search_type")[0].value == '') {
+                layer.msg('请选择数据源类型')
+                return;
+            }
+            //执行重载
+            table.reload('testReload', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                , where: {
+                    driverType: data.value //查询条件
+                }
+            });
+        });
+
+    });
+
+</script>
+</html>
 </html>

@@ -112,7 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //roleList
                 .antMatchers("/roleList/**", "/toRoleListPage")//
                 .permitAll()
-                .antMatchers("/permissionList/**", "/toPermissionListPage")//
+                .antMatchers("/permissionList/**", "/permissionList")//
                 .permitAll()
                 .antMatchers("/deleteRole/**", "/deleteRole")//
                 .permitAll()
@@ -126,6 +126,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 //roleMod
                 .antMatchers("/roleMod/**", "/roleMod")//
+                .permitAll()
+                //permissionData
+                .antMatchers("/permissionData/**", "/permissionData")//
+                .permitAll()
+                //permissionAdd
+                .antMatchers("/permissionAdd/**", "/permissionAdd")//
+                .permitAll()
+                //permissionDelete
+                .antMatchers("/permissionDelete/**", "/permissionDelete")//
                 .permitAll()
                 //openUserEdit
                 // swagger start

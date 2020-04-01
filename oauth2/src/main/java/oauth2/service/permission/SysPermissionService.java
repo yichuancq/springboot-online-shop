@@ -2,6 +2,7 @@ package oauth2.service.permission;
 
 
 import oauth2.domain.SysPermission;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -28,14 +29,25 @@ public interface SysPermissionService {
     SysPermission findById(Long id);
 
     /**
-     *
      * @param permission
      * @return
      */
     SysPermission findSysPermissionByPermission(String permission);
+
     /**
      * @param ids
      * @return
      */
     List<SysPermission> findByIds(List<Long> ids);
+
+    /**
+     * @param sysPermission
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    Page<SysPermission> findAllByPage(SysPermission sysPermission, int pageNumber, int pageSize);
+
+
+    void deletePermissionById(Long permissionId);
 }

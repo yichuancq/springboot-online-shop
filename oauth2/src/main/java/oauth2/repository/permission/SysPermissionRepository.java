@@ -2,8 +2,10 @@ package oauth2.repository.permission;
 
 import oauth2.domain.SysPermission;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface SysPermissionRepository extends JpaRepository<SysPermission,Long> {
+public interface SysPermissionRepository extends JpaRepository<SysPermission,Long> ,
+        JpaSpecificationExecutor<SysPermission> {
 
     /**
      *
