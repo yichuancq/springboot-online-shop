@@ -31,12 +31,34 @@ public class UserApplication {
     }
 
     /**
+     * @param userInfo
+     */
+    public void userMod(UserInfo userInfo) {
+        if (userInfo == null || userInfo.getId() == null) {
+            //用户为空或者ID为空
+            return;
+        }
+        if (!StringUtils.isEmpty(userInfo.getPassword())) {
+            //密码进行加密
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+        }
+        UserInfo userInfoDb = userInfoService.findUserById(userInfo.getId());
+        if (userInfoDb != null) {
+            byte state = 1;
+            userInfoDb.setState(state);
+            userInfoDb.setNickname(userInfo.getNickname());
+            userInfoDb.setUsername(userInfo.getUsername());
+            userInfoService.saveUser(userInfoDb);
+        }
+    }
+
+    /**
      * @return
      */
     public List<UserInfo> findAll() {
         return userInfoService.findAll();
     }
-
 
     public void deleteUserById(Long userId) {
         assert (userId != null);

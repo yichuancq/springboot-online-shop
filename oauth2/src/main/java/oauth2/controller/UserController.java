@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "userController")
 @Controller
 public class UserController {
-
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private UserApplication userApplication;
@@ -41,7 +40,6 @@ public class UserController {
         userApplication.saveUser(userInfo);
         UserInfo userCash = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         request.setAttribute("userInfo", userCash);
-        //userList
         request.setAttribute("userInfoList", userApplication.findAll());
         mav.setViewName("userList");
         return mav;
@@ -70,53 +68,30 @@ public class UserController {
     @ApiOperation(value = "userMod", notes = "userMod")
     @PostMapping("/userMod")
     @PostAuthorize("hasRole('ROLE_ADMIN') and hasAuthority('ROLE_ADMIN')")
-    public ModelAndView userMod(UserInfo userInfoInput, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity userMod(UserInfo userInfoInput, HttpServletRequest request, HttpServletResponse response) {
         logger.info("用户修改");
         ModelAndView mav = new ModelAndView();
-
-        mav.setViewName("userList");
-        //mav.setViewName("userMod");
-        return mav;
+        logger.info("userData:{}", userInfoInput);
+        mav.addObject("msg", "OK");
+        userApplication.userMod(userInfoInput);
+        return ResponseEntity.ok(mav);
     }
 
     @GetMapping("/userData")
     @ResponseBody
+    @PostAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity userData(UserInfo userInfo, int page, int limit)
             throws Exception {
-        logger.info("page{},limit{}",page,limit);
+        logger.info("page{},limit{}", page, limit);
         logger.info("userData");
         ResultDTO resultDTO = userApplication.findByPage(userInfo, page, limit);
         return ResponseEntity.ok(resultDTO);
     }
 
-    /**
-     * 有权限验证
-     *
-     * @param request
-     * @param response
-     * @return
-     */
-//    @GetMapping("/userList")
-//    @PostAuthorize("hasRole('ROLE_ADMIN')")
-//    public ModelAndView userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        logger.info("userList");
-//        //获取登录的用户名
-//        ModelAndView mav = new ModelAndView();
-//        //UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//       // request.setAttribute("userInfo", userInfo);
-//        request.setAttribute("userInfoList", userApplication.findAll());
-//        mav.setViewName("userList");
-//        return mav;
-//    }
     @GetMapping("/userList")
     public String userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("userList");
         return "userList";
     }
 
-    @GetMapping("/openUserEdit")
-    public String openUserEdit() throws Exception {
-        logger.info("openUserEdit");
-        return "userMod";
-    }
 }

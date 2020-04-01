@@ -123,8 +123,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/userMod/**", "/userMod")//不拦截登录相关方法
                 .permitAll()
                 //openUserEdit
-                .antMatchers("/openUserEdit/**", "/openUserEdit")//不拦截登录相关方法
-                .permitAll()
                 // swagger start
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()

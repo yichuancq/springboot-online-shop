@@ -65,8 +65,12 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script type="text" id="editWind">
-    <h3>edit me</h3>
+<script type="text/html" id="editWind">
+    <div>
+        <form>
+            <input id="name" value="hello"/>
+        </form>
+    </div>
 </script>
 <script>
 layui.use('table', function(){
@@ -86,23 +90,76 @@ layui.use('table', function(){
         layer.close(index);
       });
     } else if(obj.event === 'edit'){
+      var html='';
+      html+='<label class="control-label">用户姓名</label>';
+      html+='<input class="form-control" type="text" name="username" value="'+data.username+'" placeholder=""/>';
+      html+='<label class="control-label">用户昵称</label>';
+      html+='<input class="form-control" type="text" name="nickname" value="'+data.nickname+'" placeholder=""/>';
+      html+='<label class="control-label">用户密码</label>';
+      html+='<input class="form-control" type="password" name="password" placeholder="输入新密码"/>';
+
+      html+='<br>';
+      //layer.alert(html)
       //layer.alert('编辑行：<br>'+ JSON.stringify(data))
       console.log("userName:"+data.username);
       console.log("nickname:"+data.nickname);
       console.log("password:"+data.password);
-      openEdit();
-
+      //openEdit(data);
+      back(data);
     }
   });
- function openEdit(){
-
- }
-
+  //取消提现
+  function back(data) {
+     var html='';
+      html+='<label class="control-label">用户姓名</label>';
+      html+='<input class="form-control" type="text" id="username" value="'+data.username+'" placeholder=""/>';
+      html+='<label class="control-label">用户昵称</label>';
+      html+='<input class="form-control" type="text" id="nickname" value="'+data.nickname+'" placeholder=""/>';
+      html+='<label class="control-label">用户密码</label>';
+      html+='<input class="form-control" type="password" id="password" value="" placeholder="输入新密码"/>';
+      html+='';
+      html+='<br>';
+    layer.alert(html, {
+        skin: 'layui-layer-molv' //样式类名  自定义样式
+       ,closeBtn: 1    // 是否显示关闭按钮
+       ,anim: 1 //动画类型
+       ,btn: ['确定','取消'] //按钮
+       ,yes:function(){
+            var newName=$("#username").val();
+            var newNickname=$("#nickname").val();
+            var newPassword=$("#password").val();
+            console.log("newName:"+newName);
+            console.log("newNickname:"+newNickname);
+            return $.ajax({
+                url:'/userMod',
+                type:'post',
+                dataType:'json',
+                data:{id:data.id,username:newName,nickname:newNickname,password:newPassword},
+                success:function(msg){
+                   var index = parent.layer.getFrameIndex(window.name);
+	               parent.layer.closeAll(index);
+                   layer.close(index);
+                   //重新刷新本页
+                   window.location.reload();
+                }
+            });
+        }
+       ,btn2:function(){
+            layer.msg('取消操作');
+       }
+    });
+  }
+  //编辑弹窗
+  //
   $('.demoTable .layui-btn').on('click', function(){
     var type = $(this).data('type');
     active[type] ? active[type].call(this) : '';
   });
 });
+
+
+
+
 
 
 
@@ -155,6 +212,8 @@ layui.use('table', function(){
             });
         });
     });
+
+
 
 
 

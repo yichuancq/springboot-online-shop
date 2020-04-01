@@ -11,8 +11,36 @@ private List<UserInfo> userInfoList;
 @ManyToMany(mappedBy = "sysRoleList", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 private List<SysPermission> permissions;
 ```
-
-
+#####权限匹配
+```java
+/**
+ * 是否有权限
+ *
+ * @param request
+ * @param authentication
+ * @return
+ */
+public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
+    Object principal = authentication.getPrincipal();
+    AtomicBoolean hasPermission = new AtomicBoolean(false);
+    if (principal instanceof UserInfo) {
+        //读取用户所拥有的权限菜单
+        UserInfo userInfo = (UserInfo) principal;
+        logger.info("userInfo:{}", userInfo.toString());
+        //双层循环先得到角色根据角色获取权限，通过权限匹配URL
+        userInfo.getSysRoleList().stream().forEach(sysRole ->
+                sysRole.getPermissions().forEach(sysPermission -> {
+                    if (antPathMatcher.match(sysPermission.getUrl(), request.getRequestURI())) {
+                        logger.info("hasPermission:{}", hasPermission);
+                        hasPermission.set(true);
+                    }
+                }));
+    }
+    logger.info("hasPermission:{}", hasPermission);
+    return hasPermission.get();
+}
+```
+#####重写方法configure
 ```java
 //
 @Override

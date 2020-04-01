@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -56,6 +57,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void deleteUserById(Long id) {
         userInfoRepository.deleteById(id);
+    }
+
+    @Override
+    public UserInfo findUserById(Long id) {
+        Optional<UserInfo> userInfo = userInfoRepository.findById(id);
+        if (userInfo.isPresent()) {
+            return userInfo.get();
+        }
+        return null;
     }
 
     /**

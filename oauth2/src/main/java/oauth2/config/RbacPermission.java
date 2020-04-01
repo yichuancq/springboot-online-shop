@@ -1,7 +1,5 @@
 package oauth2.config;
 
-import oauth2.domain.SysPermission;
-import oauth2.domain.SysRole;
 import oauth2.domain.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * RBAC数据模型控制权限
@@ -30,29 +28,21 @@ public class RbacPermission {
      */
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
         Object principal = authentication.getPrincipal();
-        boolean hasPermission = false;
+        //AtomicBoolean类提供了可以原子读取和写入的底层布尔值的操作，并且还包含高级原子操作
+        AtomicBoolean hasPermission = new AtomicBoolean(false);
         if (principal instanceof UserInfo) {
             //读取用户所拥有的权限菜单
             UserInfo userInfo = (UserInfo) principal;
             logger.info("userInfo:{}", userInfo.toString());
-            List<SysRole> roles = userInfo.getSysRoleList();
-            if (roles != null) {
-                for (SysRole sysRole : roles) {
-                    System.out.println("role name=>" + sysRole.getRole());
-                    //菜单
-                    for (SysPermission permission : sysRole.getPermissions()) {
-                        System.out.println("permission name=>" + permission.getName());
-                        logger.info("permission url=>{}", permission.getUrl());
-                        logger.info("request url=>{}", request.getRequestURI());
-                        if (antPathMatcher.match(permission.getUrl(), request.getRequestURI())) {
-                            hasPermission = true;
-                            break;
-                        }
-                    }
+            //双层循环先得到角色根据角色获取权限，通过权限匹配URL
+            userInfo.getSysRoleList().stream().forEach(sysRole -> sysRole.getPermissions().forEach(sysPermission -> {
+                if (antPathMatcher.match(sysPermission.getUrl(), request.getRequestURI())) {
+                    hasPermission.set(true);
+                    logger.info("hasPermission:{}", hasPermission.get());
                 }
-            }
+            }));
         }
         logger.info("hasPermission:{}", hasPermission);
-        return hasPermission;
+        return hasPermission.get();
     }
 }

@@ -17,6 +17,7 @@ public interface UserInfoService {
      * @return
      */
     UserInfo findUserByName(String username);
+
     /**
      * save
      *
@@ -30,6 +31,8 @@ public interface UserInfoService {
      * @param id
      */
     void deleteUserById(Long id);
+
+    UserInfo findUserById(Long id);
 
     /**
      * @param

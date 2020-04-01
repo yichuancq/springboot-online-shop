@@ -40,9 +40,7 @@ public class UserInfo extends BaseEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         List<SysRole> roles = this.getSysRoleList();
-        for (SysRole role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
-        }
+        roles.forEach(sysRole -> grantedAuthorities.add(new SimpleGrantedAuthority(sysRole.getRole())));
         return grantedAuthorities;
     }
 
