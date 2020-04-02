@@ -14,15 +14,33 @@
 <body>
   <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm"  lay-event="addUser">添加用户</button>
-        <button class="layui-btn layui-btn-sm"  lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="addUser">添加用户</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
     </div>
-</script>
+  </script>
+  <!-- <button class="layui-btn" style="right: 30px;" οnclick="submitmychose()">提交选择</button> -->
+
+  <script type="text/html" id="toolbarRoleTable">
+    <div class="layui-btn-container">
+      <button class="layui-btn" style="right: 30px;" οnclick="submitmychose()">提交选择</button>
+    </div>
+  </script>
   <div>
     <br />
+    <!--用户表格-->
     <table style="width:80%" class="layui-hide" id="demo" lay-filter="demo"></table>
   </div>
+  <!--添加角色窗口-->
+  <div class="editDiv" id='editDiv' style="display:none;">
+    <!--role table-->
+    <table style="width:80%" class="layui-hide" id="roleTable" lay-filter="roleTable"></table>
+  </div>
+  <script type="text/html" id="switchTpl">
+    <!-- 这里的 checked 的状态只是演示 -->
+  <input type="checkbox" name="available" value="{{d.id}}" lay-skin="switch" lay-text="yes|no" lay-filter="RoleStatus"
+    {{ d.id ==true ? 'checked' : '' }}>
+  </script>
 </body>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
@@ -31,13 +49,16 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
+
+
+  //table
   layui.use('table', function () {
     var table = layui.table;
     //监听表格复选框选择
-    table.on('checkbox(demo)', function (obj) {
-      console.log(obj)
-    });
-    //addUser
+    // table.on('checkbox(demo)', function (obj) {
+    //   console.log(obj)
+    // });
+    //添加用户
     function addUser() {
       var html = '';
       html += '<label class="control-label">用户姓名</label>';
@@ -84,29 +105,70 @@
       var checkStatus = table.checkStatus(obj.config.id);
       var data = obj.data;
       switch (obj.event) {
-        //add user
+        //添加用户
         case 'addUser':
           addUser();
           break;
         case 'getCheckData':
           var data = checkStatus.data;
           layer.alert(JSON.stringify(data));
+
           break;
         case 'getCheckLength':
           var data = checkStatus.data;
           layer.msg('选中了：' + data.length + ' 个');
+          console.info("choose ids:");
           break;
         case 'isAll':
           layer.msg(checkStatus.isAll ? '全选' : '未全选');
           break;
       };
     });
+    ///
+    function chooseRole() {
+      //var table = layui.table;
+      var checkData = table.checkStatus('roleTable').data; //选中对象信息
+      console.log(checkData);
+      var ids = new Array();
+      for (var j = 0, len = checkData.length; j < len; j++) {
+        ids.push(checkData[j].id);//单独取id
+      }
+      layer.msg('choose:' + JSON.stringify(ids));
+    }
     table.on('tool(demo)', function (obj) {
+      //表格数据
       var data = obj.data;
-
+      //detail
       if (obj.event === 'detail') {
         layer.msg('ID：' + data.id + ' 的查看操作');
-      } else if (obj.event === 'del') {
+      }
+      //add roles
+      if (obj.event === 'addRole') {
+        //用户添加角色
+        data = obj.data;
+        layer.open({
+          title: '添加用户角色' + '[' + data.username + ']',
+          type: 1,
+          move: false,
+          content: $('#editDiv'),
+          offset: '10%',
+          area: ['60%', '80%'],
+          resize: true,
+          scrollbar: false,
+          btn: ['确定', '取消'] //按钮
+          , yes: function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            //parent.layer.closeAll(index);
+            layer.close(index);
+
+          }
+          , btn2: function () {
+            layer.msg('取消操作');
+          }
+        });
+      }
+      //删除用户
+      if (obj.event === 'del') {
         layer.confirm('真的删除 id:' + data.id + '么 ', function (index) {
           //obj.del();
           console.log("delete ID is:" + data.id);
@@ -116,8 +178,7 @@
             dataType: 'json',
             data: { userId: data.id },
             success: function (msg) {
-              //var index = parent.layer.getFrameIndex(window.name);
-              //parent.layer.closeAll(index);
+
               layer.close(index);
               //重新刷新本页
               window.parent.location.reload();
@@ -126,7 +187,9 @@
           //重新刷新本页
           window.location.reload();
         });
-      } else if (obj.event === 'edit') {
+      }
+      //editUser
+      if (obj.event === 'edit') {
         back(data);
       }
     });
@@ -172,7 +235,49 @@
       });
     }
   });
+</script>
+<script>
+  // roletable
+  layui.use(['table', 'form'], function () {
+    var table = layui.table;
+    var form = layui.form;
+    var $ = layui.$;
+    form.render('select');
+    table.render({
+      elem: '#roleTable'  //绑定table id
+      , url: '/roleData'  //数据请求路径，
+      //开启头部工具栏，并为其绑定左侧模板
+      //toolbarRoleTable
+      , toolbar: '#toolbarRoleTable' //开启头部工具栏，并为其绑定左侧模板
+      , cellMinWidth: 130
+      , cols: [
+        [
+          { type: 'checkbox', fixed: 'left' }
+          , { field: 'id', title: 'ID' }
+          , { field: 'role', title: '名称' }
+          , { field: 'available', title: '是否有效', width: 90, templet: '#switchTpl', unresize: true },
+          , { field: 'description', title: '描述' }
+          , { field: 'createTime', title: '添加时间', templet: '#createTime' }
+        ]
+      ]
+      , id: 'testReload'
+      , page: true
+      , limit: 10   //默认十条数据一页
+      , limits: [10, 20, 30, 50]  //数据分页条
+      , done: function (res, curr, count) {
+        layer.msg(res.msg)
+      }
+    });
+    //监听status操作
+    form.on('switch(RoleStatus)', function (obj) {
+      layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+    });
 
+    function submitmychose() {
+      layui.msg("ok");
+
+    }
+  });
 </script>
 <script>
   layui.use(['table', 'form'], function () {
@@ -188,7 +293,7 @@
       , cols: [
         [
           { type: 'checkbox', fixed: 'left' }
-          , { field: 'id', title: 'ID' }
+          , { field: 'id', title: 'ID', width: 100, unresize: true, sort: true }
           , { field: 'username', title: '用户名称' }
           , { field: 'nickname', title: '昵称' }
           , { field: 'password', title: '密码' }
