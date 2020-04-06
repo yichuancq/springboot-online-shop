@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import oauth2.domain.UserInfo;
 import oauth2.service.user.UserInfoService;
+import oauth2.vo.ResponseData;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,6 @@ public class LoginController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private UserInfoService userInfoService;
-
     /**
      * @return
      */
@@ -36,9 +36,11 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity login(UserInfo userInfo, HttpServletRequest request) {
+        logger.info("登录=>login");
+        logger.info("userInfo:{}", userInfo);
         HttpSession httpSession = request.getSession();
         logger.info("sessionId:{}", httpSession.getId());
-        return ResponseEntity.ok("OK");
+        return new ResponseData("登录成功", HttpStatus.valueOf(200));
     }
 
     /**
