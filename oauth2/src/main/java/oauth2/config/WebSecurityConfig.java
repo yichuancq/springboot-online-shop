@@ -18,12 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Configurable
 @EnableWebSecurity
@@ -57,43 +52,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * 静态资源设置
      */
     @Override
-    public void configure(WebSecurity webSecurity) {
-        //不拦截静态资源,所有用户均可访问的资源
-        webSecurity.ignoring().antMatchers(
-                "/",
-                "/css/**",
-                "/js/**",
-                "/images/**",
-                "/layui/**"
-        );
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/index.html", "/static/**", "/login");
     }
-
-    /**
-     * 跨域配置
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        // 允许跨域访问的 URL
-        List<String> allowedOriginsUrl = new ArrayList<>();
-        allowedOriginsUrl.add("http://localhost:8083");
-        allowedOriginsUrl.add("http://127.0.0.1:8083");
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        // 设置允许跨域访问的 URL
-        config.setAllowedOrigins(allowedOriginsUrl);
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
-
     /**
      * 认证
      */
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //webSecurityExpressionHandler();
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
@@ -113,57 +79,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable(); //注释就是使用 csrf 功能
-        http.headers().frameOptions().disable();//解决 in a frame because it set 'X-Frame-Options' to 'DENY' 问题
-        //http.anonymous().disable();
-        http.logout().logoutUrl("/welcome");
         http.authorizeRequests()
                 .antMatchers("/login/**", "/login")//不拦截登录相关方法
                 .permitAll()
-                .antMatchers("/welcome/**", "/welcome")//不拦截登录相关方法
-                .permitAll()
-                .antMatchers("/index/**", "/index")//不拦截登录相关方法
-                .permitAll()
-                .antMatchers("/403/**", "/403")//不拦截登录相关方法
-                .permitAll()
-                .antMatchers("/logout/**", "/logout")//不拦截登录相关方法
-                .permitAll()
-                .antMatchers("/favicon.ico/**", "/favicon.ico")//不拦截相关方法
-                .permitAll()
-                .antMatchers("/loginOutSuccess/**", "/loginOutSuccess")//不拦截登录相关方法
-                .permitAll()
-                ///addRole
-                .antMatchers("/addRole/**", "/addRole")//
-                .permitAll()
-                //roleList
-                .antMatchers("/roleList/**", "/toRoleListPage")//
-                .permitAll()
-                .antMatchers("/permissionList/**", "/permissionList")//
-                .permitAll()
-                .antMatchers("/deleteRole/**", "/deleteRole")//
-                .permitAll()
-                .antMatchers("/userMod/**", "/userMod")//
-                .permitAll()
-                .antMatchers("/userData/**", "/userData")//
-                .permitAll()
-                .antMatchers("/roleData/**", "/roleData")//
-                .permitAll()
-                .antMatchers("/userMod/**", "/userMod")//
-                .permitAll()
-                //roleMod
-                .antMatchers("/roleMod/**", "/roleMod")//
-                .permitAll()
-                //permissionData
-                .antMatchers("/permissionData/**", "/permissionData")//
-                .permitAll()
-                //permissionAdd
-                .antMatchers("/permissionAdd/**", "/permissionAdd")//
-                .permitAll()
-                //permissionDelete
-                .antMatchers("/permissionDelete/**", "/permissionDelete")//
-                .permitAll()
-                //permissionMod
-                .antMatchers("/permissionMod/**", "/permissionMod")//
+                .antMatchers("/login_p/**", "/login_p")//不拦截登录相关方法
                 .permitAll()
                 //openUserEdit
                 // swagger start
@@ -183,11 +102,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                //.loginPage("/login")
+                //.loginProcessingUrl("/login")
                 .usernameParameter("username") //登录用户名参数
                 .passwordParameter("password") //登录密码参数
-                .successForwardUrl("/login").permitAll()
-                .defaultSuccessUrl("/welcome").permitAll()
+                .defaultSuccessUrl("/home").permitAll()
                 .failureUrl("/error").permitAll()
 //               /设置默认登录成功跳转页面
                 .successHandler(successHandler)//登录成功处理器
@@ -197,10 +115,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(customAccessDeniedHandler) //无权限处理器
                 .and()
                 .logout().logoutUrl("/logout").permitAll()
-                .logoutSuccessUrl("/loginOutSuccess").permitAll()
                 .and()
-                .rememberMe()
-//               //设置cookie有效期
-                .tokenValiditySeconds(60 * 60 * 24 * 7);
+                .logout().permitAll()
+                .and().csrf().disable();
+
     }
 }
